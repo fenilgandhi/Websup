@@ -1,0 +1,53 @@
+{% load static %}
+
+{% block content %}
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'login/demo.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'login/style2.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'login/animate-custom.css' %}" />
+    </head>
+<body>
+<div class="container">
+    <header>
+        <h1>Login to continue <span></span></h1>
+        <nav class="codrops-demos">
+            <span><strong></strong></span>
+        </nav>
+    </header>
+    <section>
+    <div id="container_demo" >
+        <a class="hiddenanchor" id="toregister"></a>
+        <a class="hiddenanchor" id="tologin"></a>
+        <div id="wrapper">
+            <div id="login" class="animate form">
+                <form  action="{% url 'login' %}" autocomplete="on" method="post">
+
+                    {% csrf_token %}
+
+                    <h1>Log in</h1>
+                    <p>
+                        <label for="username" class="uname" data-icon="u" > Your Email </label>
+                        {{ form.email }}
+                    {% if form.errors %}
+                        <p style="color: #4464A2"><small>Note:Username and password is case sensitive</small></p>
+                    {% endif %}
+                    </p>
+                    <p>
+                        <label for="password" class="youpasswd" data-icon="p"> Your Password </label>
+                        {{ form.password }}
+                    </p>
+                    {% if form.errors %}
+                        <p style="color: red"><strong>Username with this Password Combination does not exist</strong></p>
+                    {% endif %}
+                    <p class="login button">
+                        <input type="submit" value="Login" />
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    </section>
+</div>
+</body>
+{% endblock %}
