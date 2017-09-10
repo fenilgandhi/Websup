@@ -1,0 +1,19 @@
+
+1 : Register Users on your penal : For sub business purpose (kind of staff account)
+2 : Screen popup on new schemes when he/she log's in...
+3 : Expire date of service on dashboard
+4 : Daily messages
+	Monthly used messages
+	Special Credits on Festival (For scheme and marketing purpose)
+5 : Report Log ->
+				Joined Date
+				End date
+				Message send date
+
+6 : scheme on special times
+	scheme limits (dynamic) 
+
+
+Login:
+ 		logout on session
+ 		or logout on browser close
