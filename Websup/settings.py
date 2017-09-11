@@ -31,6 +31,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Websup.urls'
 
+AUTH_USER_MODEL = 'Clientapp.MyUser'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
