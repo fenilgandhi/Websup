@@ -1,0 +1,43 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form</title>
+  
+      <link rel="stylesheet" href=" {% static 'css/style.css' %}">
+  
+</head>
+
+<body>
+  <body>
+    <div class="login">
+        <div class="login-screen">
+            <div class="app-title">
+                <h1>Login</h1>
+            </div>
+
+            <div class="login-form">
+                <form method="POST" action=".">
+                {% csrf_token %}
+                <div class="control-group">
+                <input type="text" class="login-field" value="" placeholder="Email ID" id="id_username" name="username" required maxlength="254">
+                <label class="login-field-icon fui-user" for="id_username"></label>
+                </div>
+
+                <div class="control-group">
+                <input type="password" class="login-field" value="" placeholder="Password" id="id_password" name="password" required>
+                <label class="login-field-icon fui-lock" for="id_password"></label>
+                </div>
+                
+                <input class="btn btn-primary btn-large btn-block" type="submit" value="login">
+                </form> 
+            </div>
+        </div>
+    </div>
+</body>
+    
+</body>
+</html>

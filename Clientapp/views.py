@@ -1,20 +1,37 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+@login_required
+def dashboard(request):
+	template = "clientapp_dashboard.html"
+	context = {}
+	return render(request , template,context )
+
 def aboutus(request):
-	pass
+	template = "clientapp_dashboard.html"
+	context = {}
+	return render(request , template,context )
 
 def plans(request):
-	pass
+	template = "clientapp_dashboard.html"
+	context = {}
+	return render(request , template,context )
 
 def contactus(request):
-	pass
+	template = "clientapp_dashboard.html"
+	context = {}
+	return render(request , template,context )
 
-def dashboard(request):
-	pass
-
+@login_required
 def send(request):
-	pass
+	template = "clientapp_dashboard.html"
+	context = {}
+	return render(request , template,context )
 
+@login_required
 def report(request):
-	pass
+	template = "clientapp_dashboard.html"
+	context = {}
+	return render(request , template,context )
