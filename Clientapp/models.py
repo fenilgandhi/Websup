@@ -3,16 +3,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # Custom User Manager
 class MyUserManager(BaseUserManager):
-
 	def create_user(self, name, email, password=None):
-		if not email:
-			raise ValueError('User must have an email address')
-		if not name:
-			raise ValueError('User must have a Name')
+		if not email:  raise ValueError('User must have an email address')
+		if not name: raise ValueError('User must have a Name')
 
-		user = self.model(
-			email=self.normalize_email(email),
-		)
+		user = self.model( email=self.normalize_email(email) )
 
 		user.name = name
 		user.set_password(password)
@@ -20,29 +15,14 @@ class MyUserManager(BaseUserManager):
 		return user
 
 	def create_superuser(self, name, email,  password):
-		user = self.create_user(
-			name, email,
-			password=password,
-		)
+		user = self.create_user( name, email, password=password)
 		user.is_admin = True
 		user.save(using=self._db)
 		return user
 	
 class MyUser(AbstractBaseUser):
-	name = models.CharField(
-		verbose_name='Name',
-		max_length=255,
-		unique=False,
-		null=False, blank=False
-	)
-
-	email = models.EmailField(
-		verbose_name='Email Address',
-		max_length=255,
-		unique=True,
-		null=False, blank=False
-	)
-
+	name = models.CharField( verbose_name='Name', max_length=255, unique=False, null=False, blank=False )
+	email = models.EmailField( verbose_name='Email Address', max_length=255, unique=True, null=False, blank=False )
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 

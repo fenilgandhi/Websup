@@ -1,11 +1,12 @@
 ##	Websup URL Configuration
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 import Clientapp.views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 
     url(r'^aboutus$', Clientapp.views.aboutus, name='clientapp_aboutus'),
     url(r'^plans$', Clientapp.views.plans, name='clientapp_plans'),
