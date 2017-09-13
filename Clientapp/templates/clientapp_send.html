@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<html>
+	<head>
+		<title>Bluk Whatsapp</title>
+        <!-- Plugins css-->
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css' %}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/multiselect/css/multi-select.css'%}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/select2/css/select2.min.css' %}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/morris/morris.css' %}"/>
+      <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css' %}"/>
+
+        <script type="text/javascript" src="{% static 'js/modernizr.min.js' %}"></script>
+        <script src="{% static 'plugins/morris/morris.min.js' %}" ></script>        
+        <script src="{% static 'pages/jquery.dashboard.js' %}" ></script>
+    </head>
+{% endblock head %}
+
+{% block content %}
+
+<div class="container">
+            <!-- Page-Title -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-box">
+        <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
+        <br>
+          <div class="row">
+            <div class="col-md-8">
+              <form method="POST" action="." class="form-horizontal" role="form">  
+              {% csrf_token %}
+                  <div class="form-group">
+                      <lable class="col-md-2 control-label" for="id_campaign_name">Campaign Name</lable>
+                      <div class="col-md-6">
+                        <input class="form-control" id="id_campaign_name" type="text" maxlength="100" placeholder="Enter Campaign Name here..">
+                      </div>                           
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label" for="">Mobile Numbers</label>
+                      <div class="col-md-6">
+                          <textarea class="form-control" rows="5" id=""></textarea>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label">Count</label>
+                      <div class="col-md-4">
+                          <input type="text" class="form-control" placeholder="total number in list">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-2 control-label" for="id_msg_text">Message</label>
+                      <div class="col-md-6">
+                          <textarea class="form-control" placeholder="Enter your text message" id="id_msg_text" maxlength="1500">
+                          </textarea>
+                      </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div> 
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-box">
+        <h4 class="m-t-0 header-title"><b>Upload Image, Videos, PDF</b></h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="p-20">
+              <form method="POST" action="." class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label class="control-label">Upload Image 1 </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Upload Image 2 </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Upload Image 3 </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Upload Image 4 </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-20">
+              <form method="POST" action="." class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label class="control-label">Upload Audio </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Upload Video </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Upload pdf </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-box">
+        <h4 class="m-t-0 header-title"><b>Create VCard</b></h4>
+          <br>
+            <div class="row">
+              <div class="col-md-6">
+                <form class="form-horizontal" role="form">                                    
+          <div class="form-group">
+              <input type="text" class="form-control" placeholder="Campaign Name">
+              <input type="text" class="form-control" placeholder="Adreess">
+              <input type="text" class="form-control" placeholder="contact number">
+              <input type="text" class="form-control" placeholder="Office numvber">
+              <input type="text" class="form-control" placeholder="Cell number">
+              <input type="text" class="form-control" placeholder="Email id">
+              <input type="text" class="form-control" placeholder="Website URL">
+          </div>
+          <input class="btn btn-purple waves-effect waves-light" type="submit" value="submit">
+      </div>
+    </div>
+  </div> 
+</div>
+{% endblock %}
+</body>
+</html>
+{% block script %}
+  <script>
+      var resizefunc = [];
+      function addNewlines(str) {
+        var result = '';
+        while (str.length > 0) {
+          result += str.substring(0, 200) + '\n';
+          str = str.substring(200);
+        }
+        return result;
+      }
+  </script> 
+{% block javascript %}
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/switchery/js/switchery.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/multiselect/js/jquery.multi-select.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/jquery-quicksearch/jquery.quicksearch.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}" ></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+
+      <script type="text/javascript" src="{% static 'plugins/autocomplete/jquery.mockjax.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/autocomplete/jquery.autocomplete.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/autocomplete/countries.js' %}"></script>
+      <script type="text/javascript" src="{% static 'pages/autocomplete.js' %}"></script>
+
+      <script type="text/javascript" src="{% static 'pages/jquery.form-advanced.init.js' %}"></script>
+{% endblock javascript %}
+
+{% endblock %}	
+  

@@ -32,6 +32,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Websup.urls'
 
 AUTH_USER_MODEL = 'Clientapp.MyUser'
+
 LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [

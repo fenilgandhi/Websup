@@ -8,6 +8,8 @@
         <meta name="author" content="Coderthemes">
         <link rel="shortcut icon" href="{% static 'images/favicon_1.ico' %}">
         <title>Bulk whatsapp service</title>
+        {% block css %}
+        {% endblock %}
         <!--Morris Chart CSS -->
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/morris/morris.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}"/>
@@ -128,7 +130,7 @@
                         <a href="javascript:void(0);" class="waves-effect"><i class="ti-paint-bucket"></i> <span>Bulk Whatsapp</span> <span class="menu-arrow"></span> </a>
                         <ul class="list-unstyled">
                             <li><a href="/send">Send Whatsapp</a></li>
-                            <li><a href="ui-buttons.html">Whatsapp Report</a></li>
+                            <li><a href="/report">Whatsapp Report</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -179,12 +181,12 @@
         <script>
             var resizefunc = [];
         </script>
-
         <!-- jQuery  -->
        <script src="{% static 'js/jquery.min.js' %}" ></script>
        <script src="{% static 'js/bootstrap.min.js' %}" ></script>
        <script src="{% static 'js/detect.js' %}" ></script>
        <script src="{% static 'js/fastclick.js' %}" ></script>
+       
        <script src="{% static 'js/jquery.slimscroll.js' %}" ></script>
        <script src="{% static 'js/jquery.blockUI.js' %}" ></script>
        <script src="{% static 'js/waves.js' %}" ></script>
@@ -192,21 +194,22 @@
        <script src="{% static 'js/jquery.nicescroll.js' %}" ></script>
        <script src="{% static 'js/jquery.scrollTo.min.js' %}" ></script>
 
+       {% block javascript %}
+       {% endblock %}
+
        <script src="{% static 'plugins/peity/jquery.peity.min.js' %}" ></script>
 
         <!-- jQuery  -->
        <script src="{% static 'plugins/waypoints/lib/jquery.waypoints.js' %}" ></script>
        <script src="{% static 'plugins/counterup/jquery.counterup.min.js' %}" ></script>
 
-
-      <script src="{% static 'pages/jquery.dashboard.js' %}" ></script>
       <script src="{% static 'plugins/morris/morris.min.js' %}" ></script>
       <script src="{% static 'plugins/raphael/raphael-min.js' %}" ></script>
 
       <script src="{% static 'plugins/jquery-knob/jquery.knob.js' %}" ></script>
 
+      <!-- <script src="{% static 'pages/jquery.dashboard.js' %}" ></script> -->
       
-
       <script src="{% static 'js/jquery.core.js' %}" ></script>
       <script src="{% static 'js/jquery.app.js' %}" ></script>
 

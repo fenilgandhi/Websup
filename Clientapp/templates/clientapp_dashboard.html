@@ -1,5 +1,20 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  {% block css %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css' %}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/multiselect/css/multi-select.css' %}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/select2/css/select2.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css' %}"/>
+  {% endblock %}
+</head>
+<body>
 <div class="container">
             <!-- Page-Title -->
     <div class="row">
@@ -107,3 +122,25 @@
 <!-- end row -->
 </div>
 {% endblock %}
+
+{% block javascrpit %}
+        <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/switchery/js/switchery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/multiselect/js/jquery.multi-select.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/jquery-quicksearch/jquery.quicksearch.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'plugins/autocomplete/jquery.mockjax.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/autocomplete/jquery.autocomplete.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/autocomplete/countries.js' %}"></script>
+        <script type="text/javascript" src="{% static 'pages/autocomplete.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'pages/jquery.form-advanced.init.js' %}"></script>
+
+{% endblock %}
+</body>
+</html>

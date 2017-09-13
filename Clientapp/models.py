@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+from django.forms import ModelForm
 # Custom User Manager
 class MyUserManager(BaseUserManager):
 	def create_user(self, name, email, password=None):
@@ -19,7 +19,12 @@ class MyUserManager(BaseUserManager):
 		user.is_admin = True
 		user.save(using=self._db)
 		return user
-	
+
+		class Meta:
+			model = Person
+			exclude = ('name',)
+
+
 class MyUser(AbstractBaseUser):
 	name = models.CharField( verbose_name='Name', max_length=255, unique=False, null=False, blank=False )
 	email = models.EmailField( verbose_name='Email Address', max_length=255, unique=True, null=False, blank=False )
@@ -80,6 +85,7 @@ class Contact(models.Model):
 	def __str__(self):
 		return self.number
 
+
 class WhatApp_Message_Format(models.Model):
 	campaign_name = models.CharField(max_length=100, null=False, blank=True)
 	from_user = models.ForeignKey(MyUser)
@@ -95,9 +101,22 @@ class WhatApp_Message_Format(models.Model):
 	def __str__(self):
 		return "-".join([self.from_user.name, self.campaign_name])
 
+
 class WhatsApp_Individual_Message(models.Model):
 	to_contact = models.ForeignKey(Contact , related_name='to_contact')
 	message_format = models.ForeignKey(WhatApp_Message_Format)
 	delivered = models.BooleanField(default=False)
 	sent_using = models.ForeignKey(Contact , related_name='sent_using')
 	sent_on = models.DateTimeField(auto_now=False, auto_now_add=False)
+
+
+class Whatsapp_Message_Form(ModelForm):
+	class Meta:
+		model = WhatApp_Message_Format
+		exclude = ('from_user',)
+
+
+class Whatsapp_indvidual_message_form(ModelForm):
+	class Meta:
+		model = WhatsApp_Individual_Message
+		exclude = ("",)
