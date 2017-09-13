@@ -1,19 +1,28 @@
 
-1 : Register Users on your penal : For sub business purpose (kind of staff account)
+1 : Register Users on your panel : For sub business purpose (kind of staff account)
+A : Every User can be added "only" by the admin manually. There wil never be a registration form.
+
 2 : Screen popup on new schemes when he/she log's in...
+A : Use a modal in html using jquery. (no backend work)
+
 3 : Expire date of service on dashboard
+A : ?? (Already is there)
 4 : Daily messages
 	Monthly used messages
 	Special Credits on Festival (For scheme and marketing purpose)
+A : Add a "festival plan". no need for anything extra.
+
 5 : Report Log ->
-				Joined Date
+				Joined Date 
 				End date
 				Message send date
+A : Already there 
 
 6 : scheme on special times
 	scheme limits (dynamic) 
-
+A : same as 5
 
 Login:
- 		logout on session
- 		or logout on browser close
+ 	logout on session
+ 	or logout on browser close
+ A : Then it is not login but simple browsing session.
