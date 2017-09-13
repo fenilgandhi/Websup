@@ -8,7 +8,6 @@ User
 - Contact Us
 - Pricing & Plan
 
-
 Admin
 	- Login 
 	- Logged in Users

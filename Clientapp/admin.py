@@ -1,5 +1,4 @@
 from django.contrib import admin
-#from django.contrib.auth.models import Group
 from Clientapp.models import *
 
 # Register your models here.
@@ -9,5 +8,3 @@ admin.site.register(User_Plan)
 admin.site.register(WhatsApp_Individual_Message)
 admin.site.register(WhatApp_Message_Format)
 admin.site.register(Contact)
-
-#admin.site.unregister(Group)
