@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^user/passwordchanged/$', auth_views.password_change_done, name='password_change_done'),
 
     ## Api 
+    url(r'^api/(?P<command>[a-z]+)/$' , Clientapp.views.api , name="whatsapp_api"),
 ]
