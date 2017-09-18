@@ -1,24 +1,61 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block head %}
+{% block css %}
 <html>
-	<head>
-		<title>Bluk Whatsapp</title>
+  <head>
+    <title>Bluk Whatsapp</title>
         <!-- Plugins css-->
-        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css' %}" />
+        
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}" />
-        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/multiselect/css/multi-select.css'%}" />
-        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/select2/css/select2.min.css' %}" />
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/morris/morris.css' %}"/>
-      <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css' %}"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script type="text/javascript">
+          jQuery(document).ready(function() {
+              validateNumbers();
+              $('#mobile_numbers').keyup(function() {
+                  if (/\D/g.test(this.value)) {
+                      this.value = this.value.replace(/\D/g, '');
+                  }
+                  this.value = this.value
+                      .replace(/[\n\r]+/g, "")
+                      .replace(/(.{12})/g, "$1\n");
+                  validateNumbers();
+              });
 
-        <script type="text/javascript" src="{% static 'js/modernizr.min.js' %}"></script>
-        <script src="{% static 'plugins/morris/morris.min.js' %}" ></script>        
-        <script src="{% static 'pages/jquery.dashboard.js' %}" ></script>
+              function validateNumbers() {
+                var value = $("#mobile_numbers").val();
+                var numbersArray = value.split('\n');
+                var validNumbers = [];
+                var duplicateNumbers = [];
+                var inValidNumbers = [];
+                
+                // remove empty elements
+                var index = numbersArray.indexOf("");
+                while(index !== -1)
+                {
+                    numbersArray.splice(index,1);
+                    index = numbersArray.indexOf("");
+                }
+                
+                for (var $i = 0; $i < numbersArray.length; $i++) {
+                    var number = numbersArray[$i];
+                    if (validNumbers.indexOf(number) !== -1 || inValidNumbers.indexOf(number) !== -1) {
+                        duplicateNumbers.push(number);
+                    } else if (number.match(/[789]\d{9}/)) {
+                        validNumbers.push(number);
+                    } else {
+                        inValidNumbers.push(number);
+                    }
+                }
+                $("#total").text(numbersArray.length);
+              }
+          });
+
+    </script>
     </head>
-{% endblock head %}
+{% endblock css %}
 
 {% block content %}
 
@@ -27,87 +64,76 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="card-box">
-        <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
-        <br>
-          <div class="row">
-            <div class="col-md-8">
-              <form method="POST" action="." class="form-horizontal" role="form">  
-              {% csrf_token %}
-                  <div class="form-group">
-                      <lable class="col-md-2 control-label" for="id_campaign_name">Campaign Name</lable>
-                      <div class="col-md-6">
-                        <input class="form-control" id="id_campaign_name" type="text" maxlength="100" placeholder="Enter Campaign Name here..">
-                      </div>                           
+      <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
+      <br>
+        <div class="row">
+          <div class="col-md-8">
+            <form method="POST" class="form-horizontal" enctype="multipart/form-data" >  
+            {% csrf_token %}
+              <div class="form-group">
+                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Campaign Name</b></lable>
+                  <div class="col-md-6">
+                    <input class="form-control" id="id_campaign_name" name="campaign_name" type="text" maxlength="100" placeholder="Enter Campaign Name here..">
+                  </div>                           
+              </div>
+              <div class="form-group">
+                  <label class="col-md-2 control-label" for="">Mobile Numbers</label>
+                  <div class="col-md-6">
+                      <textarea type="text" name="mobile_numbers" id="mobile_numbers" class="form-control" ></textarea>
+                      <p><b>Numbers in list</b>  <span id="total"></span></p>
                   </div>
-                  <div class="form-group">
-                      <label class="col-md-2 control-label" for="">Mobile Numbers</label>
-                      <div class="col-md-6">
-                          <textarea class="form-control" rows="5" id=""></textarea>
-                      </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-md-2 control-label" for="id_msg_text">Message</label>
+                  <div class="col-md-6">
+                      <textarea class="form-control" placeholder="Enter your text message" id="id_msg_text" name="msg_text" maxlength="1500">
+                      </textarea>
                   </div>
-                  <div class="form-group">
-                      <label class="col-md-2 control-label">Count</label>
-                      <div class="col-md-4">
-                          <input type="text" class="form-control" placeholder="total number in list">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label class="col-md-2 control-label" for="id_msg_text">Message</label>
-                      <div class="col-md-6">
-                          <textarea class="form-control" placeholder="Enter your text message" id="id_msg_text" maxlength="1500">
-                          </textarea>
-                      </div>
-                  </div>
-              </form>
-            </div>
+              </div>
           </div>
+        </div>
       </div>
     </div> 
   </div>
   <div class="row">
     <div class="col-sm-12">
       <div class="card-box">
-        <h4 class="m-t-0 header-title"><b>Upload Image, Videos, PDF</b></h4>
+      <h4 class="m-t-0 header-title"><b>Upload Image, Videos, PDF</b></h4>
         <div class="row">
           <div class="col-md-6">
             <div class="p-20">
-              <form method="POST" action="." class="form-horizontal" role="form">
+              <div class="form-horizontal" >
                 <div class="form-group">
-                  <label class="control-label">Upload Image 1 </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
+                  <label class="control-label" for="id_msg_img1">Image 1 </label>
+                  <input id="id_msg_img1" name="msg_img1" type="file" class="filestyle" data-buttonbefore="true" accept="Image/*">
                 </div>
                 <div class="form-group">
-                  <label class="control-label">Upload Image 2 </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
+                  <label class="control-label" for="id_msg_img2">Image 2 </label>
+                  <input id="id_msg_img2" name="msg_img2" type="file" class="filestyle" data-buttonbefore="true" accept="Image/*">
                 </div>
                 <div class="form-group">
-                  <label class="control-label">Upload Image 3 </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
+                  <label class="control-label">Upload pdf </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true" accept="image/x-eps,application/pdf">
                 </div>
-                <div class="form-group">
-                  <label class="control-label">Upload Image 4 </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
-                </div>
-              </form>
+              </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="p-20">
-              <form method="POST" action="." class="form-horizontal" role="form">
+              <div class="form-horizontal" >
                 <div class="form-group">
-                  <label class="control-label">Upload Audio </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
+                  <label class="control-label">Image 3 </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true" accept="Image/*">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Image 4 </label>
+                  <input type="file" class="filestyle" data-buttonbefore="true" accept="Image/*">
                 </div>
                 <div class="form-group">
                   <label class="control-label">Upload Video </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
+                  <input type="file" class="filestyle" data-buttonbefore="true" accept="Video/*">
                 </div>
-                <div class="form-group">
-                  <label class="control-label">Upload pdf </label>
-                  <input type="file" class="filestyle" data-buttonbefore="true">
-                </div>
-              </form>
-            </div>
+              </div>
           </div>
         </div>
     </div>
@@ -115,24 +141,26 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="card-box">
-        <h4 class="m-t-0 header-title"><b>Create VCard</b></h4>
-          <br>
-            <div class="row">
-              <div class="col-md-6">
-                <form class="form-horizontal" role="form">                                    
-          <div class="form-group">
-              <input type="text" class="form-control" placeholder="Campaign Name">
+      <h4 class="m-t-0 header-title"><b>Create VCard</b></h4>
+      <br>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group" class="form-horizontal">
+              <input required type="text" class="form-control" placeholder="Campaign Name">
               <input type="text" class="form-control" placeholder="Adreess">
-              <input type="text" class="form-control" placeholder="contact number">
-              <input type="text" class="form-control" placeholder="Office numvber">
-              <input type="text" class="form-control" placeholder="Cell number">
-              <input type="text" class="form-control" placeholder="Email id">
-              <input type="text" class="form-control" placeholder="Website URL">
+              <input data-parsley-type="digits" type="text" class="form-control" placeholder="contact number">
+              <input data-parsley-type="digits" type="text" class="form-control" placeholder="Office numvber">
+              <input data-parsley-type="digits" type="text" class="form-control" placeholder="Cell number">
+              <input parsley-type="email" type="email" class="form-control" placeholder="Email id">
+              <input parsley-type="url" type="url" class="form-control" placeholder="Website URL">
+            </div> 
+            <button class="btn btn-purple waves-effect waves-light" type="submit" name="submit">submit</button> 
           </div>
-          <input class="btn btn-purple waves-effect waves-light" type="submit" value="submit">
+        </div>
       </div>
     </div>
-  </div> 
+  </div>        
+</form>
 </div>
 {% endblock %}
 </body>
@@ -150,6 +178,7 @@
       }
   </script> 
 {% block javascript %}
+  
       <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'plugins/switchery/js/switchery.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'plugins/multiselect/js/jquery.multi-select.js' %}"></script>
@@ -166,7 +195,16 @@
       <script type="text/javascript" src="{% static 'pages/autocomplete.js' %}"></script>
 
       <script type="text/javascript" src="{% static 'pages/jquery.form-advanced.init.js' %}"></script>
+
+      
+      <script type="text/javascript" src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>  
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('form').parsley();
+        });
+      </script>
+
+
 {% endblock javascript %}
 
-{% endblock %}	
-  
+{% endblock %}

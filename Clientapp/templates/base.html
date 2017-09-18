@@ -14,11 +14,11 @@
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.min.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/core.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/components.css' %}"/>
-        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/icons.css' %}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/icons.css' %}"/> 
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/pages.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/responsive.css' %}"/>
         {% block css %}
-        {% endblock %}
+        {% endblock css %}
         
         <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,6 +26,8 @@
        <script src="{% static 'https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js' %}" ></script>
        <script src="{% static 'https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js' %}" ></script>
         <![endif]-->
+
+        <script src="{% static 'js/modernizr.min.js' %}"></script>
     </head>
 
 
@@ -74,7 +76,7 @@
                                         <em class="fa fa-diamond noti-primary"></em>
                                      </div>
                                      <div class="media-body">
-                                        <h5 class="media-heading">A new order has been placed A new order has been placed</h5>
+                                        <h5 class="media-heading">You will notify with our new schemes</h5>
                                         <p class="m-0">
                                             <small>There are new settings available</small>
                                         </p>
@@ -88,9 +90,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="hidden-xs">
+                   <!-- <li class="hidden-xs">
                         <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="icon-size-fullscreen"></i></a>
-                    </li>
+                    </li>-->
                     <li class="hidden-xs">
                         <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="icon-settings"></i></a>
                     </li>
@@ -99,8 +101,6 @@
                         <img src="{% static 'images/users/avatar-1.jpg'%}" alt="user-img" class="img-circle"> </a>
                         
                         <ul class="dropdown-menu">
-                            <li><a href="clientapp_profile"><i class="ti-user m-r-10 text-custom"></i> Profile </a></li>
-                            <li class="divider"></li>
                             <li><a href="/user/logout"><i class="ti-power-off m-r-10 text-danger"></i> Logout</a></li>
                         </ul>
                     </li>
@@ -118,22 +118,21 @@
             <!--- Divider -->
             <div id="sidebar-menu">
                 <ul>
-
                   <li class="text-muted menu-title">Navigation</li>
-
                     <li class="has_sub">
-
-                        <a href="/"><i class="ti-home"></i> <span> Dashboard </span> <span class="menu-arrow"></span></a>
-                       
-                     </li>
+                      <a href="{% url 'clientapp_dashboard' %}"><i class="ti-home"></i> <span> Dashboard </span> <span class="menu-arrow"></span>
+                      </a> 
+                    </li>
                      <!-- <ul class="list-unstyled"> -->
                     <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="ti-paint-bucket"></i> <span>Bulk Whatsapp</span> <span class="menu-arrow"></span> </a>
-                        <ul class="list-unstyled">
-                            <li><a href="/send">Send Whatsapp</a></li>
-                            <li><a href="/report">Whatsapp Report</a></li>
-                        </ul>
-                    </li>
+                      <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-send"></i> <span>Bulk Whatsapp</span> 
+                      <span class="menu-arrow"></span> </a>
+                      <ul class="list-unstyled">
+                          <li><a href="{% url 'clientapp_send' %}">Send Whatsapp</a></li>
+                          <li><a href="{% url 'clientapp_report' %}">Whatsapp Report</a></li>
+                      </ul>
+                    </li> 
+                  </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
@@ -166,7 +165,7 @@
             <li class="list-group-item">
                 <a href="#">
                     <div class="avatar">
-                        <img src="{% static 'images/users/avatar-1.jpg'%}" alt="">
+                        <img src="{% static 'images/users/avatar-1.jpg '%}" alt="">
                     </div>
                     <span class="name">Indra</span>
                     <i class="fa fa-circle online"></i>
@@ -197,15 +196,16 @@
        <script src="{% static 'js/jquery.scrollTo.min.js' %}" ></script>
 
        {% block javascript %}
-       {% endblock %}
+       {% endblock javascript %}
 
        <script src="{% static 'plugins/peity/jquery.peity.min.js' %}" ></script>
 
         <!-- jQuery  -->
-       <script src="{% static 'plugins/waypoints/lib/jquery.waypoints.js' %}" ></script>
+       <script src="{% static 'plugins/waypoints/jquery.waypoints.js' %}" ></script>
        <script src="{% static 'plugins/counterup/jquery.counterup.min.js' %}" ></script>
 
       <script src="{% static 'plugins/morris/morris.min.js' %}" ></script>
+      
       <script src="{% static 'plugins/raphael/raphael-min.js' %}" ></script>
 
       <script src="{% static 'plugins/jquery-knob/jquery.knob.js' %}" ></script>

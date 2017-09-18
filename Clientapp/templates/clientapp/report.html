@@ -1,3 +1,122 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block content %}
+{% block css %}
+<html>
+  <head>
+    <title>Bluk Whatsapp Report</title>
+        <!-- Plugins css-->
+        <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/jquery.dataTables.min.css' %}"/>
+	    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/buttons.bootstrap.min.css' %}"/>
+	    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/responsive.bootstrap.min.css' %}"/>
+	    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/dataTables.bootstrap.min.css' %}"/>
+	    
+    </head>
+{% endblock css %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card-box table-responsive">
+			<table id="datatable-buttons" class="table table-striped table-bordered">
+			    <thead>
+			    <tr>
+			        <th>Name</th>
+			        <th>Position</th>
+			        <th>Office</th>
+			        <th>Age</th>
+			        <th>Start date</th>
+			        <th>Salary</th>
+			    </tr>
+			    </thead>
+			    <tbody>
+			    <tr>
+			        <td>Tiger Nixon</td>
+			        <td>System Architect</td>
+			        <td>Edinburgh</td>
+			        <td>61</td>
+			        <td>2011/04/25</td>
+			        <td>$320,800</td>
+			    </tr>
+			    <tr>
+			        <td>Garrett Winters</td>
+			        <td>Accountant</td>
+			        <td>Tokyo</td>
+			        <td>63</td>
+			        <td>2011/07/25</td>
+			        <td>$170,750</td>
+			    </tr>
+			    <tr>
+			        <td>Ashton Cox</td>
+			        <td>Junior Technical Author</td>
+			        <td>San Francisco</td>
+			        <td>66</td>
+			        <td>2009/01/12</td>
+			        <td>$86,000</td>
+			    </tr>
+			    <tr>
+			        <td>Cedric Kelly</td>
+			        <td>Senior Javascript Developer</td>
+			        <td>Edinburgh</td>
+			        <td>22</td>
+			        <td>2012/03/29</td>
+			        <td>$433,060</td>
+			    </tr>
+			   </tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</html>
+
+{% block javascript %}
+	<script>
+    	var resizefunc = [];
+	</script>
+
+	<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'plugins/datatables/dataTables.bootstrap.js' %}"></script>
+
+	<script src="{% static 'plugins/datatables/dataTables.buttons.min.js' %}"></script>
+	<script src="{% static 'plugins/datatables/buttons.bootstrap.min.js' %}"></script>
+	
+	<script src="{% static 'plugins/datatables/buttons.html5.min.js' %}"></script>
+	<script src="{% static 'plugins/datatables/buttons.print.min.js' %}"></script>
+	
+	<script src="{% static 'plugins/datatables/responsive.bootstrap.min.js' %}"></script>
+	
+	<script src="{% static 'pages/datatables.init.js' %}"></script>
+
+	<script type="text/javascript">
+    $(document).ready(function () {
+        $('#datatable').dataTable();
+        $('#datatable-keytable').DataTable({keys: true});
+        $('#datatable-responsive').DataTable();
+        $('#datatable-colvid').DataTable({
+            "dom": 'C<"clear">lfrtip',
+            "colVis": {
+                "buttonText": "Change columns"
+            }
+        });
+        $('#datatable-scroller').DataTable({
+            ajax: "assets/plugins/datatables/json/scroller-demo.json",
+            deferRender: true,
+            scrollY: 380,
+            scrollCollapse: true,
+            scroller: true
+        });
+        var table = $('#datatable-fixed-header').DataTable({fixedHeader: true});
+        var table = $('#datatable-fixed-col').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+                leftColumns: 1,
+                rightColumns: 1
+            }
+        });
+    });
+    TableManageButtons.init();
+
+    </script>
+{% endblock javascript %}
 {% endblock %}
