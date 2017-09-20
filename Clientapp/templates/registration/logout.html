@@ -1,26 +1,23 @@
-{% load staticfiles %}
+{% extends 'registration/baselogin.html' %}
 {% load i18n %}
 
 <!DOCTYPE html>
-<html >
-<head>
-  <meta charset="UTF-8">
-  <title>Logged Out</title>
-  
-      <link rel="stylesheet" href=" {% static 'css/style.css' %}">
-  
-</head>
-
+{% block content %}
 <body>
-  <body>
-    <div class="login">
-        <div class="login-screen">
-            <div class="app-title">
-                <h1>Logged Out Successfully</h1>
+  <div class="account-pages' %}"></div>
+    <div class="clearfix' %}"></div>
+        <div class="wrapper-page">
+            <div class=" card-box">
+              <div class="panel-body form-horizontal m-t-20">
+                <h2>Logged Out Successfully</h2>
+                <div class="form-group">
+                  <div class="col-xs-12">
+                    <br>
+                    <a href="/" >Click here to login </a>                    
+                  </div>
+                </div>
             </div>
-
-            <a href="/" >Click here to login </a>
+          </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
