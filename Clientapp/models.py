@@ -1,6 +1,8 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.forms import ModelForm
+from django.core.urlresolvers import reverse
 
 # Custom User Manager
 class MyUserManager(BaseUserManager):
@@ -23,13 +25,16 @@ class MyUserManager(BaseUserManager):
 
 		class Meta:
 			model = Person
-			exclude = ('name',)
+			exclude = ("",)
 
 class MyUser(AbstractBaseUser):
 	name = models.CharField( verbose_name='Name', max_length=255, unique=False, null=False, blank=False )
 	email = models.EmailField( verbose_name='Email Address', max_length=255, unique=True, null=False, blank=False )
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
+	total_credits = models.IntegerField(verbose_name="Total Credits")
+	remaining_credits = models.IntegerField(verbose_name="Remaining Credits")
+	used_credits =  models.IntegerField(verbose_name="Used Credits")
 
 	objects = MyUserManager()
 
@@ -53,7 +58,20 @@ class MyUser(AbstractBaseUser):
 	@property
 	def is_staff(self):
 		# Is the user a member of staff?
-		return self.is_admin
+		return self.is_active
+		
+
+class contactus(models.Model):
+	name = models.CharField(verbose_name="name", max_length=25, null=False, blank=False)
+	contact_number = models.IntegerField(verbose_name="Mobile Number")
+	email_address = models.EmailField(verbose_name="Email Address", max_length=255, unique=True, null=False, blank=False)
+	contact_msg = models.CharField(verbose_name="Contact message", max_length=1500, null=True, blank=False)
+
+	class Meta:
+		verbose_name_plural = 'Contact Us'
+
+	def __str__(self):
+		return "-".join([self.name, str(self.contact_number)])
 
 class Plan(models.Model):
 	is_active = models.BooleanField(default=False)
@@ -64,7 +82,7 @@ class Plan(models.Model):
 	description = models.TextField(verbose_name='Description', blank=True)
 
 	def __str__(self):
-		return "-".join([self.name_of_plan, str(self.credits), str(self.price), str(self.duration)])
+		return self.name_of_plan
 
 class User_Plan(models.Model):
 	user = models.ForeignKey(MyUser)
@@ -77,7 +95,7 @@ class User_Plan(models.Model):
 	ending_on = models.DateField(verbose_name = "Valid Upto", auto_now=False, auto_now_add=True)
 
 	def __str__(self):
-		return "-".join([self.user, self.plan])
+		return "-".join([self.user.email , self.plan.name_of_plan])
 
 class Contact(models.Model):
 	number = models.CharField(verbose_name='Mobile Number', max_length=20, blank=False, null=False, unique=True)
@@ -90,9 +108,10 @@ class WhatApp_Message_Format(models.Model):
 	from_user = models.ForeignKey(MyUser)
 	sent_on = models.DateField(verbose_name='Sent On', auto_now=False, auto_now_add=True)
 	msg_text = models.CharField(verbose_name='message', max_length=1500, blank=True, null=True)
+
 	# To implement after django-media setup
-	# msg_img1
-	# msg_img2
+	msg_img1 = models.FileField(null=True, blank=True)
+	msg_img2 = models.FileField(null=True, blank=True)
 	# msg_img3
 	# msg_img4
 	# msg_doc
@@ -107,7 +126,6 @@ class WhatsApp_Individual_Message(models.Model):
 	sent_using = models.ForeignKey(Contact , related_name='sent_using')
 	sent_on = models.DateTimeField(auto_now=False, auto_now_add=False)
 
-
 #################################################################################################
 #									Model Form													#	
 #################################################################################################
@@ -121,4 +139,9 @@ class Whatsapp_Message_Form(ModelForm):
 class Whatsapp_indvidual_message_form(ModelForm):
 	class Meta:
 		model = WhatsApp_Individual_Message
+		exclude = ("",)
+
+class ContactusForm(ModelForm):
+	class Meta:
+		model = contactus
 		exclude = ("",)

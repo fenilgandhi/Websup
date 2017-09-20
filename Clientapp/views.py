@@ -1,44 +1,18 @@
 import threading
 from django.shortcuts import render, HttpResponseRedirect , HttpResponse
 from .models import *
-from django.contrib.auth.decorators import login_required
 from .yowsup_integration.stack import *
 
 # Create your views here.
 #####################
-#   Website Views
-#####################
-def homepage(request):
-    template = ''
-    context = {}
-    return render(request, template,context)
-
-def aboutus(request):
-    template = "clientapp/aboutus.html"
-    context = {}
-    return render(request, template, context)
-
-def plans(request):
-    template = "clientapp/plans.html"
-    context = {}
-    return render(request, template, context)
-
-def contactus(request):
-    template = "clientapp/contactus.html"
-    context = {}
-    return render(request, template, context)
-
-
-#####################
 #   User Views
 #####################
-@login_required
 def dashboard(request):
+    user = request.user
     template = "clientapp/dashboard.html"
-    context = {}
+    context = {'user' : user}
     return render(request, template, context)
 
-@login_required
 def send(request):
     errors = None
     if (request.method == "POST"):
@@ -56,7 +30,6 @@ def send(request):
     return render(request, template, context)
 
 
-@login_required
 def report(request):
     template = "clientapp/report.html"
     context = {}
@@ -68,11 +41,10 @@ def report(request):
 #                          Adding  Yowsup   Integration 
 #
 ##########################################################################################################################
-
 yowsup_handler = YowsupWebStack()
 
 ## Starting the Whatsapp Stack Loop in a new thread. 
-threading.Thread(target=yowsup_handler.start).start()
+#threading.Thread(target=yowsup_handler.start).start()
 
 ## Access to yowsupweb layer
 weblayer = yowsup_handler.get_web_layer()
@@ -83,3 +55,8 @@ def api(request, command):
         for token in 'If you are reading this message, then the demo is live.'.split(' '):
             weblayer.message_send('919999999999' , token)
     return HttpResponse("Done")
+
+def api_gui(request):
+    template = "clientapp/whatsapp.html"
+    context = {}
+    return render(request, template, context)
