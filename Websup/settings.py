@@ -10,7 +10,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
-    'grappelli',
+    #'grappelli',
     'Clientapp',
     'django.contrib.admin',
     'django.contrib.auth',
