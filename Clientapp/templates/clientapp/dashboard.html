@@ -44,8 +44,8 @@
               <i class="fa fa-whatsapp text-custom"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">0</b></h3>
-              <p class="text-muted">Queue Messages</p>
+              <h3 class="text-dark"><b class="counter">{{ user.remaining_credits }}</b></h3>
+              <p class="text-muted">Remaining Messages</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -57,8 +57,8 @@
               <i class="fa fa-whatsapp text-info"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">0</b></h3>
-              <p class="text-muted">Delivered Messages</p>
+              <h3 class="text-dark"><b class="counter">{{ user.sent_messages }}</b></h3>
+              <p class="text-muted">Send Messages</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -70,8 +70,8 @@
               <i class="fa fa-whatsapp text-custom"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">64,570</b></h3>
-              <p class="text-muted">Sent Messages</p>
+              <h3 class="text-dark"><b class="counter">{{ user.queue_messages }}</b></h3>
+              <p class="text-muted">Queue Messages</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -100,19 +100,19 @@
       <h4 class="text-dark header-title m-t-0 m-b-30">Todays Activity</h4>
       <div class="widget-chart text-center">
         <h5 class="text-muted m-t-20">Todays send messages</h5>
-        <h2 class="font-600">75</h2>
+        <h2 class="font-600">{{ user.on_date_send_messages }}</h2>
         <ul class="list-inline m-t-15">
           <li>
             <h5 class="text-muted m-t-20">Total mesage</h5>
-            <h4 class="m-b-0">1000</h4>
+            <h4 class="m-b-0">{{ user.total_credits }}</h4>
           </li>
           <li>
             <h5 class="text-muted m-t-20">Last week</h5>
-            <h4 class="m-b-0">523</h4>
+            <h4 class="m-b-0">{{ user.last_week_send_messages }}</h4>
           </li>
           <li>
             <h5 class="text-muted m-t-20">Last Month</h5>
-            <h4 class="m-b-0">965</h4>
+            <h4 class="m-b-0">{{ user.last_month_send_messages }}</h4>
           </li>
         </ul>
       </div>

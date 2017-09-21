@@ -59,7 +59,6 @@ class MyUser(AbstractBaseUser):
 	def is_staff(self):
 		# Is the user a member of staff?
 		return self.is_active
-		
 
 class contactus(models.Model):
 	name = models.CharField(verbose_name="name", max_length=25, null=False, blank=False)
@@ -85,6 +84,7 @@ class Plan(models.Model):
 		return self.name_of_plan
 
 class User_Plan(models.Model):
+	objects = MyUserManager()
 	user = models.ForeignKey(MyUser)
 	plan = models.ForeignKey(Plan)
 	started_on = models.DateField( verbose_name = "Subscribed On", auto_now=False, auto_now_add=True)
@@ -105,7 +105,7 @@ class Contact(models.Model):
 
 class WhatApp_Message_Format(models.Model):
 	campaign_name = models.CharField(max_length=100, null=False, blank=True)
-	from_user = models.ForeignKey(MyUser)
+	from_user = models.ForeignKey(MyUser, null=True)
 	sent_on = models.DateField(verbose_name='Sent On', auto_now=False, auto_now_add=True)
 	msg_text = models.CharField(verbose_name='message', max_length=1500, blank=True, null=True)
 

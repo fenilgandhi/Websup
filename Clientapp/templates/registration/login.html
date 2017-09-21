@@ -4,6 +4,18 @@
 <div class="account-pages' %}"></div>
 <div class="clearfix' %}"></div>
 <div class="wrapper-page">
+    {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+    {% if next %}
+        {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+        {% else %}
+        <p>Please login to enter in dashboard.</p>
+        {% endif %}
+    {% endif %}
+
     <div class=" card-box">
         <div class="panel-heading"> 
             <h3 class="text-center"> Sign In to <strong class="text-custom">WinsofWebSolution</strong> </h3>

@@ -61,7 +61,9 @@
 
                 
                 
+
                 <ul class="nav navbar-nav navbar-right pull-right">
+                    <li class="notifi-title text-center " style="color:white;"><span>{{ request.user.name  }}</span></li>
                     <li class="dropdown top-menu-item-xs">
                         <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
                             <i class="icon-bell"></i> <span class="badge badge-xs badge-danger"></span>
@@ -98,7 +100,7 @@
                     </li>
                     <li class="dropdown top-menu-item-xs">
                         <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                        <img src="{% static 'images/users/avatar-1.jpg'%}" alt="user-img" class="img-circle"> </a>
+                        <img src="{% static 'images/users/avatar-1.jpg'%}" alt="{{ request.user }}" class="img-circle"> </a>
                         
                         <ul class="dropdown-menu">
                             <li><a href="/user/logout"><i class="ti-power-off m-r-10 text-danger"></i> Logout</a></li>
