@@ -1,6 +1,14 @@
 {% extends 'registration/baselogin.html' %}
 {% load i18n %}
+
 {% block content %}
+{% if request.user.is_authenticated %}
+<script>
+window.location.href="/";
+</script>
+{%endif%}
+
+
 <div class="account-pages' %}"></div>
 <div class="clearfix' %}"></div>
 

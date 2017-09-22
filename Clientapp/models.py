@@ -5,8 +5,6 @@ from django.forms import ModelForm
 from django.core.urlresolvers import reverse
 
 # Custom User Manager
-
-
 class MyUserManager(BaseUserManager):
 
     def create_user(self, name, email, password=None):
@@ -96,7 +94,7 @@ class Plan(models.Model):
     name_of_plan = models.CharField(verbose_name="Plan name", max_length=50, null=False, blank=False)
     credits = models.IntegerField(verbose_name="Credits")
     price = models.IntegerField(verbose_name="Price")
-    duration = models.CharField(verbose_name="Validity", max_length=30, null=False, blank=False)
+    duration = models.IntegerField(verbose_name="Validity(in days)", null=False, blank=False)
     description = models.TextField(verbose_name='Description', blank=True)
 
     def __str__(self):
@@ -119,8 +117,10 @@ class User_Plan(models.Model):
         self.remaining_credits = self.total_credits
     
     def save(self, *args, **kwargs):
+        self.update_credits()
         super(User_Plan, self).save(*args, **kwargs)
         self.user.update_credits()
+
 
     def delete(self, *args, **kwargs):
         super(User_Plan, self).delete(*args, **kwargs)
@@ -130,17 +130,18 @@ class User_Plan(models.Model):
         return "-".join([self.user.email, self.plan.name_of_plan])
 
 class Contact(models.Model):
-    number = models.CharField(verbose_name='Mobile Number', max_length=20, blank=False, null=False, unique=True)
+    number = models.CharField(verbose_name='Mobile Number', max_length=12, blank=False, null=False, unique=True)
 
     def __str__(self):
         return self.number
 
-class WhatApp_Message_Format(models.Model):
+class WhatsApp_Message_Format(models.Model):
     campaign_name = models.CharField(max_length=100, null=False, blank=True)
     from_user = models.ForeignKey(MyUser, null=True)
-    sent_on = models.DateField(verbose_name='Sent On', auto_now=False, auto_now_add=True)
+    added_on = models.DateTimeField(verbose_name='Added On', auto_now=False, auto_now_add=True)
     msg_text = models.CharField(verbose_name='message', max_length=1500, blank=True, null=True)
-
+    is_approved = models.BooleanField(default=False)
+    
     # To implement after django-media setup
     msg_img1 = models.FileField(null=True, blank=True)
     msg_img2 = models.FileField(null=True, blank=True)
@@ -148,38 +149,34 @@ class WhatApp_Message_Format(models.Model):
     # msg_img4
     # msg_doc
 
+    
     def __str__(self):
         return "-".join([self.from_user.name, self.campaign_name])
 
 
 class WhatsApp_Individual_Message(models.Model):
     to_contact = models.ForeignKey(Contact, related_name='to_contact')
-    message_format = models.ForeignKey(WhatApp_Message_Format)
+    message_format = models.ForeignKey(WhatsApp_Message_Format)
     delivered = models.BooleanField(default=False)
     sent_using = models.ForeignKey(Contact, related_name='sent_using' , blank=True, null=True)
-    sent_on = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
+    added_on = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
 
 #################################################################################################
 #									Model Form													#
 #################################################################################################
-
-
 class Whatsapp_Message_Form(ModelForm):
-
     class Meta:
-        model = WhatApp_Message_Format
+        model = WhatsApp_Message_Format
         exclude = ('from_user',)
 
 
 class Whatsapp_indvidual_message_form(ModelForm):
-
     class Meta:
         model = WhatsApp_Individual_Message
         exclude = ("",)
 
 
 class ContactusForm(ModelForm):
-
     class Meta:
         model = contactus
         exclude = ("",)

@@ -9,17 +9,42 @@
 <br>
 <section class="container">
 <div class="row">
-	<div class="jumbotron text-center well">	
-		<h4 id="connection_status" class="btn btn-danger">Not Connected</h4>	
+	<div class="text-center well">	
+		<h4 id="connection_status_btn" class="btn btn-danger">Disconnected</h4>	
 	</div>
+	<div class="container well">
+	  <table class="table">
+	    <thead>
+	      <tr>
+	        <th>ID</th>
+	        <th>Campaign Name</th>
+	        <th>User</th>
+	        <th>Sent On</th>
+	        <th></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	    {% for msg_format in msg_formats %}
+	    <tr>
+	      	<td>{{msg_format.id}}</td>
+	      	<td>{{msg_format.campaign_name}}</td>
+	      	<td>{{msg_format.from_user.email}}</td>
+	      	<td>{{msg_format.added_on}}</td>
+
+	      	<td><a class="btn btn-primary" href="/admin/whatsapp/{{msg_format.id}}">--> </a></td> 
+		</tr>
+	    {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+
 </div>
 </section>
 
 
 <script src="/static/js/jquery.min.js" ></script>
 <script src="/static/js/bootstrap.min.js" ></script>
-<script>
-var connected_status_button = $('#connection_status'); 
-</script>
+<script src="/static/js/main.js" ></script>
+
 </body>
 </html>

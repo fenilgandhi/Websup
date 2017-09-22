@@ -9,7 +9,6 @@ import Clientapp.views
 
 ##  Websup URL Configuration
 urlpatterns = [
-    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
 
     ## Clientapp
@@ -22,7 +21,12 @@ urlpatterns = [
     url(r'^user/logout/$', login_required(auth_views.logout), {'template_name' : 'registration/logout.html'}, name='auth_logout'),
     url(r'^user/changepassword/$', login_required(auth_views.password_change), {'post_change_redirect': 'password_change_done'}, name='password_change'),
     url(r'^user/passwordchanged/$', login_required(auth_views.password_change_done), name='password_change_done'),
+
+    ## Api 
+    url(r'^admin/whatsapp$', staff_member_required(Clientapp.views.api_gui), name='whatsapp_gui'),
+    url(r'^api/(?P<command>[a-z]+)/$' , staff_member_required(Clientapp.views.api), name="whatsapp_api"),
 ]
+
 
 if settings.DEBUG is True:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

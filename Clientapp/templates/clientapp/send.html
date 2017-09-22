@@ -2,15 +2,10 @@
 {% load staticfiles %}
 
 {% block css %}
-<html>
-  <head>
-    <title>Bluk Whatsapp</title>
-        <!-- Plugins css-->
-        
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}" />
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/morris/morris.css' %}"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{% static 'js/jquery.min.js' %}" ></script>
         <script type="text/javascript">
           jQuery(document).ready(function() {
               validateNumbers();
@@ -155,7 +150,7 @@
               <input parsley-type="email" type="email" class="form-control" placeholder="Email id">
               <input parsley-type="url" type="url" class="form-control" placeholder="Website URL">
             </div> 
-            <button class="btn btn-purple waves-effect waves-light" type="submit" name="submit">submit</button> 
+            <button class="btn btn-danger btn-lg waves-effect waves-light" type="submit" name="submit">Submit</button> 
           </div>
         </div>
       </div>
@@ -164,8 +159,7 @@
 </form>
 </div>
 {% endblock %}
-</body>
-</html>
+
 {% block script %}
   <script>
       var resizefunc = [];
@@ -178,6 +172,8 @@
         return result;
       }
   </script> 
+{% endblock %}
+
 {% block javascript %}
   
       <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
@@ -207,5 +203,3 @@
 
 
 {% endblock javascript %}
-
-{% endblock %}

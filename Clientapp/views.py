@@ -26,6 +26,7 @@ def send(request):
             new_message.from_user = request.user
             new_message.save()
             for mobile_number in mobile_numbers:
+                mobile_number = '91' + mobile_number
                 contact_detail = Contact.objects.filter(number=mobile_number)
                 if len(contact_detail) < 1:
                     contact_detail = Contact()
@@ -38,7 +39,7 @@ def send(request):
                 individual_message.to_contact = contact_detail
                 individual_message.message_format = new_message
                 individual_message.save()
-            return HttpResponseRedirect("/send")
+            return HttpResponseRedirect("/report")
         else:
             errors = str(new_member_form.errors)
     message_form = Whatsapp_Message_Form()
@@ -48,8 +49,9 @@ def send(request):
 
 
 def report(request):
+    individual_messages = WhatsApp_Individual_Message.objects.filter(message_format__from_user=request.user)
     template = "clientapp/report.html"
-    context = {}
+    context = { 'individual_messages' : individual_messages}
     return render(request, template, context)
 
 
@@ -61,19 +63,26 @@ def report(request):
 yowsup_handler = YowsupWebStack()
 
 ## Starting the Whatsapp Stack Loop in a new thread. 
-#threading.Thread(target=yowsup_handler.start).start()
+threading.Thread(target=yowsup_handler.start).start()
 
 ## Access to yowsupweb layer
 weblayer = yowsup_handler.get_web_layer()
-weblayer.login( '919999999999' , '9999999999999999999999999999')    
+weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')    
 
 def api(request, command):
+    if command == 'status':
+        if weblayer.assertConnected():
+            return HttpResponse("Connected")
+        else:
+            return HttpResponse("Disconnected")
+
     if command == 'send':
         for token in 'If you are reading this message, then the demo is live.'.split(' '):
             weblayer.message_send('919999999999' , token)
-    return HttpResponse("Done")
+        return None
 
 def api_gui(request):
+    msg_formats = WhatsApp_Individual_Message.objects.filter(delivered=False, message_format__is_approved=True, message_format__from_user__is_active=True)
     template = "clientapp/whatsapp.html"
-    context = {}
+    context = { 'msg_formats' : msg_formats }
     return render(request, template, context)
