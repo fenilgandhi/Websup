@@ -5,10 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.defaults import page_not_found
+
+from Clientapp.admin import admin_view
+admin.site.admin_view = admin_view
 import Clientapp.views
 
 ##  Websup URL Configuration
 urlpatterns = [
+    # url(r'^admin/login', page_not_found),
     url(r'^admin/', admin.site.urls),
 
     ## Clientapp
