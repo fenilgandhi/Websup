@@ -1,0 +1,29 @@
+{% extends "registration/baselogin.html" %}
+
+{% block content %}
+	{% if invalid %}{% url "password_reset_recover" as recovery_url %}
+		<p>{% blocktrans %}Sorry, this password reset link is invalid. You can still <a href="{{ recovery_url }}">request a new one</a>.{% endblocktrans %}</p>
+	{% else %}
+		<div class="account-pages"></div>
+<div class="clearfix"></div>
+<div class="wrapper-page">
+	<div class=" card-box">
+		<div class="panel-heading"> 
+        	<h3 class="text-center"><strong class="text-success">WhatsApp Portal</strong></h3>
+        	<p>{% blocktrans %}Hi, <strong>{{ username }}</strong>. Please choose your new password.{% endblocktrans %}</p>
+    	</div> 
+	    <div class="panel-body">
+	    	<form method="post" action="{% url "password_reset_reset" token %}" class="form-horizontal m-t-20">
+		    	<div class="form-group ">
+		            <div class="col-xs-12">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<p><input type="submit" value="{% trans "set new password" %}"></p>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+	{% endif %}
+{% endblock %}

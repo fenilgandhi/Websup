@@ -1,0 +1,39 @@
+{% extends "registration/baselogin.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Password recovery" %}{% endblock %}
+
+{% block content %}
+<div class="account-pages"></div>
+<div class="clearfix"></div>
+<div class="wrapper-page">
+	<div class=" card-box">
+		<div class="panel-heading">
+			<h3 class="text-center"> Reset Password </h3>
+		</div>
+
+		<div class="panel-body">
+			<form method="post" action="#" role="form" class="text-center">
+				<div class="alert alert-info alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						×
+					</button>
+					Enter your <b>Email</b> and instructions will be sent to you!
+				</div>
+				<div class="form-group m-b-0">
+					<div class="input-group">
+						{% csrf_token %}
+						<input type="text" class="form-control" placeholder="Email ID" name="username_or_email" required="" id="id_username_or_email">
+						<span class="input-group-btn">
+							<button type="submit" value="{% trans "Recover my password" %}" class="btn btn-purple w-sm waves-effect waves-light">
+								Reset
+							</button> 
+						</span>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
