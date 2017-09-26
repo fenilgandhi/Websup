@@ -16,8 +16,17 @@ Websup.prototype.check_connected = function() {
             success: function(response) {
                 websup.connection_status_btn.textContent = response;
             },
-    });
+  });
 }
+
+
+Websup.prototype.send_message = function() {
+  var websup = this;
+  $.ajax({
+
+  });
+}
+
 
 $(document).ready( function() {
   window.websup = new Websup();
