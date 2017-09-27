@@ -84,7 +84,7 @@ class YowsupWebLayer(YowInterfaceLayer):
 		self.output("Login Failed, reason: %s" % entity.getReason(), prompt=False)
 
 	def output(self, message, tag = "general", prompt = True):
-		print(message)
+		logging.debug(message)
 
 	###########################################################################
 	##					CORE  WHATSAPP  FUNCTIONS
@@ -122,6 +122,6 @@ class YowsupWebLayer(YowInterfaceLayer):
 
 			outgoingMessage = TextMessageProtocolEntity(content, to=self.aliasToJid(mobilenumber))
 			self.toLower(outgoingMessage)
-
-	def execute_commands(self):
-		pass
+			logging.info("Sent A New Message" + str(mobilenumber) + str(content))
+			return True
+		return False

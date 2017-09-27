@@ -95,7 +95,6 @@ class PasswordRecoveryForm(forms.Form):
 
         return user
 
-
 class PasswordResetForm(forms.Form):
     password1 = forms.CharField(
         label=_('New password'),

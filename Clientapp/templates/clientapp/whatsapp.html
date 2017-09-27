@@ -16,6 +16,7 @@
 	  <table class="table">
 	    <thead>
 	      <tr>
+	        <th>Status</th>
 	        <th>ID</th>
 	        <th>User</th>
 	        <th>Campaign Name</th>
@@ -27,6 +28,7 @@
 	    <tbody>
 	    {% for msg_format in msg_formats %}
 	    <tr>
+	      	<td>Not sent</td>
 	      	<td>{{msg_format.id}}</td>
 	      	<td>{{msg_format.message_format.from_user}}</td>
 	      	<td>{{msg_format.message_format.campaign_name}}</td>

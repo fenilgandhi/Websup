@@ -13,7 +13,6 @@ import Clientapp.views
 
 ##  Websup URL Configuration
 urlpatterns = [
-    # url(r'^admin/login', page_not_found),
     url(r'^admin/', admin.site.urls),
 
     ## Clientapp

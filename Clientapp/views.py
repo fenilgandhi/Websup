@@ -19,7 +19,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from Clientapp.forms import PasswordRecoveryForm, PasswordResetForm
 from Clientapp.signals import user_recovers_password
 
-# from .yowsup_integration.stack import *
+from .yowsup_integration.stack import *
 
 # Create your views here.
 #####################
@@ -236,6 +236,8 @@ class ResetDone(generic.TemplateView):
 
 
 reset_done = ResetDone.as_view()
+
+
 ##########################################################################################################################                
 #                   
 #                          Adding  Yowsup   Integration 
@@ -253,14 +255,23 @@ weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')
 def api(request, command):
 	if command == 'status':
 		if weblayer.assertConnected():
-			return HttpResponse("Connected")
+			return HttpResponse(True)
 		else:
-			return HttpResponse("Disconnected")
+			weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')
+			if weblayer.assertConnected():
+				return HttpResponse(True)			
+	
+	if (command == 'send'):
+		id = request.GET['id']
+		msg_object = WhatsApp_Individual_Message.objects.filter(delivered=False , id=id)[0]
+		if msg_object:
+			if weblayer.message_send(msg_object.to_contact.number, msg_object.message_format.msg_text):
+				msg_object.delivered=True
+				msg_object.save()
+				return HttpResponse(True)
 
-	if command == 'send':
-		for token in 'If you are reading this message, then the demo is live.'.split(' '):
-			weblayer.message_send('919999999999' , token)
-		return None
+	## Default Case if nothing else works
+	return HttpResponse(False)
 
 def api_gui(request):
 	msg_formats = WhatsApp_Individual_Message.objects.filter(delivered=False, message_format__is_approved=True, message_format__from_user__is_active=True)

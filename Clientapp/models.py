@@ -161,6 +161,10 @@ class WhatsApp_Individual_Message(models.Model):
     sent_using = models.ForeignKey(Contact, related_name='sent_using' , blank=True, null=True)
     added_on = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
 
+class WhatsApp_Contact(models.Model):
+    mobile_number = models.CharField(verbose_name='Mobile Number', max_length=12, blank=False, null=False, unique=True)
+    password = models.CharField(verbose_name='Password', max_length=70, blank=False, null=False)
+
 #################################################################################################
 #									Model Form													#
 #################################################################################################
