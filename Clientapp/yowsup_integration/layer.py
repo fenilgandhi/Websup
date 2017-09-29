@@ -26,6 +26,7 @@ from yowsup.common.optionalmodules import PILOptionalModule, AxolotlOptionalModu
 
 logger = logging.getLogger(__name__)
 
+
 class YowsupWebLayer(YowInterfaceLayer):
 	EVENT_START = "org.openwhatsapp.yowsup.event.cli.start"
 	DISCONNECT_ACTION_EXIT = 1
@@ -47,9 +48,8 @@ class YowsupWebLayer(YowInterfaceLayer):
 		#self.input_processing_Thread = threading.Thread(target = self.execute_commands)
 		#self.input_processing_Thread.daemon = True
 
-
 	###########################################################################
-	##					LIB WHATSAPP FUNCTIONS
+	# LIB WHATSAPP FUNCTIONS
 	###########################################################################
 	def aliasToJid(self, calias):
 		' Converts alias to Jid'
@@ -67,32 +67,32 @@ class YowsupWebLayer(YowInterfaceLayer):
 		return jid
 
 	def assertConnected(self):
-		' Checks if user is still logged in'  
+		' Checks if user is still logged in'
 		if self.connected:
 			return True
 		else:
 			return False
-	
+
 	@ProtocolEntityCallback("success")
 	def onSuccess(self, entity):
 		self.connected = True
 		self.output("Logged in!", "Auth", prompt=False)
-		
+
 	@ProtocolEntityCallback("failure")
 	def onFailure(self, entity):
 		self.connected = False
 		self.output("Login Failed, reason: %s" % entity.getReason(), prompt=False)
 
-	def output(self, message, tag = "general", prompt = True):
+	def output(self, message, tag="general", prompt=True):
 		logging.debug(message)
 
 	###########################################################################
-	##					CORE  WHATSAPP  FUNCTIONS
+	# CORE  WHATSAPP  FUNCTIONS
 	###########################################################################
 
 	@EventCallback(EVENT_START)
 	def onStart(self, layerEvent):
-		#self.input_processing_Thread.start()
+		# self.input_processing_Thread.start()
 		return True
 
 	def setCredentials(self, username, password):
@@ -113,7 +113,12 @@ class YowsupWebLayer(YowInterfaceLayer):
 		'Logout a certain user'
 		if self.assertConnected():
 			self.broadcastEvent(YowLayerEvent(YowNetworkLayer.EVENT_STATE_DISCONNECT))
-	
+
+	def contacts_sync(self, contacts):
+		if self.assertConnected():
+			entity = GetSyncIqProtocolEntity(contacts)
+			self.toLower(entity)
+
 	def message_send(self, mobilenumber, content):
 		'Send a single message to a given contact(if it is in contacts) and user is connected'
 		if self.assertConnected():

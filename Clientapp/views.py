@@ -117,6 +117,8 @@ def api_mainpage(request, id=None):
 		return render(request, template, context)
 	else:
 		individual_messages = WhatsApp_Individual_Message.objects.filter(message_format__id=id , delivered=False)
+		contacts = [msg.to_contact.number for msg in individual_messages]
+		weblayer.contacts_sync(contacts)
 		template = "clientapp/whatsapp_message.html"
 		context = { 'messages' : individual_messages }
 		return render(request, template, context)
