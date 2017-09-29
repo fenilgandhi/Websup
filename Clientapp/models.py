@@ -145,14 +145,13 @@ class WhatsApp_Message_Format(models.Model):
     # To implement after django-media setup
     msg_img1 = models.FileField(null=True, blank=True)
     msg_img2 = models.FileField(null=True, blank=True)
-    # msg_img3
-    # msg_img4
-    # msg_doc
-
+    # msg_img3 = models.FileField(null=True, blank=True)
+    # msg_img4 = models.FileField(null=True, blank=True)
+    # msg_doc = models.FileField(null=True, blank=True)
+    
     
     def __str__(self):
         return "-".join([self.from_user.name, self.campaign_name])
-
 
 class WhatsApp_Individual_Message(models.Model):
     to_contact = models.ForeignKey(Contact, related_name='to_contact')

@@ -5,13 +5,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'm4)5j*^hk9ys*%^w%6qhof9s%#i%u1ka%7#9vn(ezm1xiqb88p'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 INSTALLED_APPS = [
     'Clientapp',
-    'password_reset',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,4 +82,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR , "static")
+
+#STATIC_ROOT = os.path.join(BASE_DIR , "static")
+STATICFILES_DIRS = os.path.join(BASE_DIR , "static"),

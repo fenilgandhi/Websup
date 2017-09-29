@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" href="/static/images/favicon_1.ico">
+    <title>Bulk WhatsApp API</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/bootstrap.min.css"/>
+</head>
+<body>
+<br>
+<section class="container">
+<div class="row">
+	<div class="text-center well">	
+		<h4 id="connection_status_btn" class="btn btn-danger">Disconnected</h4>	
+	</div>
+	<div class="container well">
+	  <table class="table">
+	    <thead>
+	      <tr>
+	        <th>Status</th>
+	        <th>ID</th>
+	        <th>User</th>
+	        <th>Campaign Name</th>
+	        <th>Added On</th>
+	        <th>Message Text</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	    {% for msg_format in msg_formats %}
+	    <tr>
+	      	<td>Not sent</td>
+	      	<td><a href="/admin/whatsapp/{{msg_format.id}}"> {{msg_format.id}} </a></td>
+	      	<td>{{msg_format.from_user}}</td>
+	      	<td>{{msg_format.campaign_name}}</td>
+	      	<td>{{msg_format.added_on}}</td>
+	      	<td>{{msg_format.msg_text}}</td>
+		</tr>
+	    {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+</div>
+</section>
+
+<script src="/static/js/jquery.min.js" ></script>
+<script src="/static/js/bootstrap.min.js" ></script>
+<script src="/static/js/main.js" ></script>
+
+</body>
+</html>

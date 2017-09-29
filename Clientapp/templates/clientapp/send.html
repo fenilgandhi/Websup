@@ -57,7 +57,14 @@
 <div class="container">
             <!-- Page-Title -->
   <div class="row">
+    {% if errors %}
     <div class="col-sm-12">
+      <h1 class="text-danger card-box"> {{errors}} </h1>
+    </div>
+    {% else %}
+    
+    <div class="col-sm-12">
+      
       <div class="card-box">
         
       <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
@@ -89,7 +96,8 @@
           </div>
         </div>
       </div>
-    </div> 
+    </div>
+
   </div>
   <div class="row">
     <div class="col-sm-12">
@@ -157,6 +165,7 @@
     </div>
   </div>        
 </form>
+  {% endif %}
 </div>
 {% endblock %}
 
