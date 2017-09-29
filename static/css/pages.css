@@ -134,7 +134,6 @@ File: Pages
 }
 /* Multiple */
 .ms-container {
-  background: transparent url('../images/multiple-arrow.png') no-repeat 50% 50%;
 }
 .ms-container .ms-list {
   box-shadow: none;
@@ -1874,7 +1873,6 @@ File: Pages
    Accounts pages
 ============= */
 .account-pages {
-  background: url("../images/agsquare.png");
   position: absolute;
   height: 100%;
   width: 100%;
