@@ -24,11 +24,13 @@ from .yowsup_integration.stack import *
 #   User Views
 #####################
 def dashboard(request):
-	plan_details = Plan.objects.filter(is_active=True)
-	user = request.user
-	template = "clientapp/dashboard.html"
-	context = {'user' : user, 'plan_details' : plan_details}
-	return render(request, template, context)
+    plan_details = Plan.objects.filter(is_active=True)
+    user_plan_details = User_Plan.objects.filter(user=request.user)
+    if len(user_plan_details) > 0 :
+        user_plan_details = user_plan_details[0]
+    template = "clientapp/dashboard.html"
+    context = {'plan_details' : plan_details, 'user_plan_details' : user_plan_details, }
+    return render(request, template, context)
 
 def send(request):
 	errors = None

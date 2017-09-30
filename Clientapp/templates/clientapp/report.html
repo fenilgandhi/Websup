@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block content %}
+
 {% block css %}
-<html>
-  <head>
     <title>Bluk Whatsapp Report</title>
-        <!-- Plugins css-->
-        <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/jquery.dataTables.min.css' %}"/>
-	    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/buttons.bootstrap.min.css' %}"/>
-	    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/responsive.bootstrap.min.css' %}"/>
-	    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/dataTables.bootstrap.min.css' %}"/>
-	    
-    </head>
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/jquery.dataTables.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/buttons.bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/responsive.bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/dataTables.bootstrap.min.css' %}"/>
+        
 {% endblock css %}
+
+
+{% block content %}
 <div class="row">
     <div class="col-sm-12">
         <div class="card-box table-responsive">
@@ -23,7 +22,7 @@
 			        <th>Campaign Name</th>
 			        <th>Message Text</th>
 			        <th>Added On</th>
-			        <th>Sent On</th>
+			        <th>Status</th>
 			    </tr>
 			    </thead>
 			    <tbody>
@@ -33,7 +32,7 @@
                     <td>{{msg.message_format.campaign_name}}</td>
                     <td>{{msg.message_format.msg_text}}</td>
                     <td>{{msg.added_on}}</td>
-                    <td>{{msg.delivered}}</td>
+                    <td>{% if msg.delivered %}<i class="fa fa-check-circle text-success"></i>{%else %} <b>Pending</b> {% endif %}</td>
 			    </tr>	
 		    	{% endfor %}
 			   </tbody>
@@ -42,7 +41,7 @@
 	</div>
 </div>
 </html>
-
+{% endblock %}
 {% block javascript %}
 	<script>
     	var resizefunc = [];
@@ -58,11 +57,16 @@
 	<script src="{% static 'plugins/datatables/buttons.print.min.js' %}"></script>
 	
 	<script src="{% static 'plugins/datatables/responsive.bootstrap.min.js' %}"></script>
+    
+    <script src="{% static 'plugins/datatables/moment.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables/datetime-moment.js' %}"></script>
 	
 	<script src="{% static 'pages/datatables.init.js' %}"></script>
 
 	<script type="text/javascript">
     $(document).ready(function () {
+        $.fn.dataTable.moment( 'HH:mm MMM D, YY' );
+        
         $('#datatable').dataTable();
         $('#datatable-keytable').DataTable({keys: true});
         $('#datatable-responsive').DataTable();
@@ -95,4 +99,3 @@
 
     </script>
 {% endblock javascript %}
-{% endblock %}

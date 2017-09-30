@@ -1,20 +1,18 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+
+{% block css %}
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css' %}"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/multiselect/css/multi-select.css' %}"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/select2/css/select2.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/dataTables.bootstrap.min.css' %}"/>
+{% endblock %}
+
+
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title></title>
-  {% block css %}
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css' %}"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/multiselect/css/multi-select.css' %}"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/select2/css/select2.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css' %}"/>
-  {% endblock %}
-</head>
-<body>
 <div class="container">
     <!-- Page-Title -->
     <div class="row">
@@ -32,7 +30,7 @@
           </div>
           <div class="text-right">
               <h3 class="text-dark"><b class="counter">{{ user.total_credits }} </b></h3>
-              <p class="text-muted">Whatsapp Credits</p>
+              <p class="text-muted">Total Credits</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -45,7 +43,7 @@
           </div>
           <div class="text-right">
               <h3 class="text-dark"><b class="counter">{{ user.remaining_credits }}</b></h3>
-              <p class="text-muted">Remaining Messages</p>
+              <p class="text-muted">Left Messages</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -53,12 +51,12 @@
   
   <div class="col-md-6 col-lg-3">
       <div class="widget-bg-color-icon card-box">
-          <div class="bg-icon bg-icon-info pull-left">
-              <i class="fa fa-whatsapp text-info"></i>
+          <div class="bg-icon bg-icon-custom pull-left">
+              <i class="fa fa-whatsapp text-custom"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">{{ user.sent_messages }}</b></h3>
-              <p class="text-muted">Send Messages</p>
+              <h3 class="text-dark"><b class="counter">{{ user.queue_messages }}</b></h3>
+              <p class="text-muted">Messages in Queue</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -66,64 +64,91 @@
 
   <div class="col-md-6 col-lg-3">
       <div class="widget-bg-color-icon card-box">
-          <div class="bg-icon bg-icon-custom pull-left">
-              <i class="fa fa-whatsapp text-custom"></i>
+          <div class="bg-icon bg-icon-info pull-left">
+              <i class="fa fa-whatsapp text-info"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">{{ user.queue_messages }}</b></h3>
-              <p class="text-muted">Queue Messages</p>
+              <h3 class="text-dark"><b class="counter">{{ user.sent_messages }}</b></h3>
+              <p class="text-muted">Sent Messages</p>
           </div>
           <div class="clearfix"></div>
       </div>
   </div>
+
+  
 </div>
+
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-12">
     <div class="card-box">
-      </q><h4 class="text-dark header-title m-t-0">Today's Update</h4>
+      <h4 class="text-dark header-title m-t-0 m-b-30">Current Plan Details</h4>
+      <div class="widget-chart">
+        <div class="card-box table-responsive">
+          <table id="datatable-buttons" class="table table-striped table-bordered">
+            <tbody>
+              <tr>
+                <td>Plan Name</td>
+                <td> {{ user_plan_details.plan.name_of_plan }} </td>
+              </tr>
+              <tr>
+                <td>Credits</td>  
+                <td> {{ user_plan_details.total_credits }}</td>              
+              </tr>
+              <tr>
+                <td>Activation Date</td>
+                <td>{{ user_plan_details.started_on}}</td>                
+              </tr>
+              <tr>
+                <td>Expiry Date</td>
+                <td>{{ user_plan_details.ending_on }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-lg-12">
+    <div class="card-box">
+      </q><h4 class="text-dark header-title m-t-0">Whatsapp Plans</h4>
         <div class="text-center">
-            <ul class="list-inline chart-detail-list">
-                <li>
-                    <h5><i class="fa fa-circle m-r-5" style="color: #7e57c2;"></i>News</h5>
-                </li>
-                <li>
-                    <h5><i class="fa fa-circle m-r-5" style="color: #34d3eb;"></i>Links</h5>
-                </li>
-            </ul>   
+          <ul class="list-inline chart-detail-list">
+            <div class="container">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Whatsapp Plan</th>
+                  <th>Message Credits</th>
+                  <th>Message Cost</th>
+                  <th>Plan Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pd in plan_details %}
+                <tr>
+                  <td>{{ pd.name_of_plan }}</td>
+                  <td>{{ pd.credits }}</td>
+                  <td>{{ pd.price }}</td>
+                  <td>{{ pd.duration }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </ul>   
         </div>
       <div id="morris-line-example" style="height: 300px;">
     </div>
   </div>
   </div>
-  <div class="col-lg-4">
-    <div class="card-box">
-      <h4 class="text-dark header-title m-t-0 m-b-30">Todays Activity</h4>
-      <div class="widget-chart text-center">
-        <h5 class="text-muted m-t-20">Todays send messages</h5>
-        <h2 class="font-600">{{ user.on_date_send_messages }}</h2>
-        <ul class="list-inline m-t-15">
-          <li>
-            <h5 class="text-muted m-t-20">Total mesage</h5>
-            <h4 class="m-b-0">{{ user.total_credits }}</h4>
-          </li>
-          <li>
-            <h5 class="text-muted m-t-20">Last week</h5>
-            <h4 class="m-b-0">{{ user.last_week_send_messages }}</h4>
-          </li>
-          <li>
-            <h5 class="text-muted m-t-20">Last Month</h5>
-            <h4 class="m-b-0">{{ user.last_month_send_messages }}</h4>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 </div>
 <!-- end row -->
+
 </div>
 {% endblock %}
 
-{% block javascrpit %}
+{% block javascript %}
         <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'plugins/switchery/js/switchery.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'plugins/multiselect/js/jquery.multi-select.js' %}"></script>
@@ -142,5 +167,3 @@
         <script type="text/javascript" src="{% static 'pages/jquery.form-advanced.init.js' %}"></script>
 
 {% endblock %}
-</body>
-</html>

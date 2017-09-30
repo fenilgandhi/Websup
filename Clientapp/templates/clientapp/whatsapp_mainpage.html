@@ -20,6 +20,7 @@
 	        <th>ID</th>
 	        <th>User</th>
 	        <th>Campaign Name</th>
+	        <th>No. of Msg</th>
 	        <th>Added On</th>
 	        <th>Message Text</th>
 	      </tr>
@@ -28,9 +29,10 @@
 	    {% for msg_format in msg_formats %}
 	    <tr>
 	      	<td>Not sent</td>
-	      	<td><a href="/admin/whatsapp/{{msg_format.id}}"> {{msg_format.id}} </a></td>
-	      	<td>{{msg_format.from_user}}</td>
+	      	<td>{{msg_format.id}}</td>
+	      	<td><a href="/admin/whatsapp/{{msg_format.id}}">{{msg_format.from_user}}</a></td>
 	      	<td>{{msg_format.campaign_name}}</td>
+	      	<td>{{msg_format.whatsapp_individual_message_set.count}}</td>
 	      	<td>{{msg_format.added_on}}</td>
 	      	<td>{{msg_format.msg_text}}</td>
 		</tr>
