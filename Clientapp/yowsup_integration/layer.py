@@ -45,8 +45,8 @@ class YowsupWebLayer(YowInterfaceLayer):
 			# "NAME": "PHONE@s.whatsapp.net"
 		}
 
-		#self.input_processing_Thread = threading.Thread(target = self.execute_commands)
-		#self.input_processing_Thread.daemon = True
+		# self.input_processing_Thread = threading.Thread(target = self.execute_commands)
+		# self.input_processing_Thread.daemon = True
 
 	###########################################################################
 	# LIB WHATSAPP FUNCTIONS
@@ -82,6 +82,11 @@ class YowsupWebLayer(YowInterfaceLayer):
 	def onFailure(self, entity):
 		self.connected = False
 		self.output("Login Failed, reason: %s" % entity.getReason(), prompt=False)
+
+	@EventCallback(YowNetworkLayer.EVENT_STATE_DISCONNECTED)
+	def onStateDisconnected(self, layerEvent):
+		self.output("Disconnected: %s" % layerEvent.getArg("reason"))
+		self.connected = False
 
 	def output(self, message, tag="general", prompt=True):
 		logging.debug(message)
@@ -125,6 +130,9 @@ class YowsupWebLayer(YowInterfaceLayer):
 			if sys.version_info >= (3, 0):
 				content = content.encode("utf-8")
 
+			entity = OutgoingChatstateProtocolEntity(ChatstateProtocolEntity.STATE_TYPING, self.aliasToJid(mobilenumber))
+			self.toLower(entity)
+			time.sleep(0.5)			
 			outgoingMessage = TextMessageProtocolEntity(content, to=self.aliasToJid(mobilenumber))
 			self.toLower(outgoingMessage)
 			logging.info("Sent A New Message" + str(mobilenumber) + str(content))
