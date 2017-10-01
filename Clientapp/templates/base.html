@@ -32,7 +32,7 @@
     <!-- LOGO -->
     <div class="topbar-left">
         <div class="text-center">
-            <a href="index.html" class="logo"><i class="icon-magnet icon-c-logo"></i><span>WINS<i class="md md-album"></i>FT</span></a>
+            <a href="{% url 'clientapp_dashboard' %}" class="logo"><i class="icon-magnet icon-c-logo"></i><span>WINS<i class="md md-album"></i>FT</span></a>
             <!-- Image Logo here -->
             <!--<a href="index.html" class="logo">-->
                 <!--<i class="icon-c-logo"> <img src="{% static 'images/logo_sm.png'%}" height="42"/> </i>-->
@@ -57,40 +57,6 @@
 
                 <ul class="nav navbar-nav navbar-right pull-right">
                     <li class="notifi-title text-center " style="color:white;"><span>{{ request.user.name  }}</span></li>
-                    <!-- <li class="dropdown top-menu-item-xs">
-                        <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                            <i class="icon-bell"></i> <span class="badge badge-xs badge-danger"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-lg">
-                            <li class="notifi-title"><span class="label label-default pull-right">New 3</span>Notification</li>
-                            <li class="list-group slimscroll-noti notification-list">
-                               
-                               <a href="javascript:void(0);" class="list-group-item">
-                                  <div class="media">
-                                     <div class="pull-left p-r-10">
-                                        <em class="fa fa-diamond noti-primary"></em>
-                                     </div>
-                                     <div class="media-body">
-                                        <h5 class="media-heading">You will notify with our new schemes</h5>
-                                        <p class="m-0">
-                                            <small>There are new settings available</small>
-                                        </p>
-                                     </div>
-                                  </div>
-                               </a>
-                            <li>
-                                <a href="javascript:void(0);" class="list-group-item text-right">
-                                    <small class="font-600">See all notifications</small>
-                                </a>
-                            </li>
-                        </ul>
-                    </li> -->
-                   <!-- <li class="hidden-xs">
-                        <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="icon-size-fullscreen"></i></a>
-                    </li>-->
-                    <!-- <li class="hidden-xs">
-                        <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="icon-settings"></i></a>
-                    </li> -->
                     <li class="dropdown top-menu-item-xs">
                         <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
                         <img src="{% static 'images/users/avatar-1.jpg'%}" alt="{{ request.user }}" class="img-circle"> </a>
