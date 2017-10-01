@@ -23,15 +23,17 @@ from yowsup.layers.protocol_media.mediauploader import MediaUploader
 from yowsup.layers.protocol_profiles.protocolentities import *
 from yowsup.common.tools import Jid
 from yowsup.common.optionalmodules import PILOptionalModule, AxolotlOptionalModule
+from yowsup.env import YowsupEnv
 
 logger = logging.getLogger(__name__)
-
 
 class YowsupWebLayer(YowInterfaceLayer):
     EVENT_START = "org.openwhatsapp.yowsup.event.cli.start"
     DISCONNECT_ACTION_EXIT = 1
 
     def __init__(self):
+        YowsupEnv.setEnv( 'android' )
+
         super(YowsupWebLayer, self).__init__()
         YowInterfaceLayer.__init__(self)
 
