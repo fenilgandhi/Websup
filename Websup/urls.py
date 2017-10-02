@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^$' , login_required(Clientapp.views.dashboard) , name="clientapp_dashboard"),
     url(r'^send$', login_required(Clientapp.views.send) ,  name="clientapp_send"),
     url(r'^report$', login_required(Clientapp.views.report),  name="clientapp_report"),
+    url(r'^contactus$', login_required(Clientapp.views.contactus),  name="clientapp_contactus"),
 
     ## Login 
     url(r'^user/login/$', auth_views.login, {'template_name' : 'registration/login.html'}, name='auth_login'),
@@ -27,10 +28,10 @@ urlpatterns = [
     url(r'^user/passwordchanged/$', login_required(auth_views.password_change_done), name='password_change_done'),
 
     # Api
-    url(r'^admin/whatsapp$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
-    url(r'^admin/whatsapp/(?P<id>[\d]+)/$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
-    url(r'^api/(?P<command>[a-z]+)/$' , staff_member_required(Clientapp.views.api), name="whatsapp_api"),
-    url(r'^admin/adminReport$', staff_member_required(Clientapp.views.adminReport), name='whatsapp_report'),
+    # url(r'^admin/whatsapp$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
+    # url(r'^admin/whatsapp/(?P<id>[\d]+)/$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
+    # url(r'^api/(?P<command>[a-z]+)/$' , staff_member_required(Clientapp.views.api), name="whatsapp_api"),
+    # url(r'^admin/adminReport$', staff_member_required(Clientapp.views.adminReport), name='whatsapp_report'),
 ]
 
 

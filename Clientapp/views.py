@@ -17,7 +17,7 @@ from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
 
 
-from .yowsup_integration.stack import *
+# from .yowsup_integration.stack import *
 
 # Create your views here.
 #####################
@@ -75,6 +75,21 @@ def report(request):
 	context = { 'individual_messages' : individual_messages}
 	return render(request, template, context)
 
+def contactus(request):
+	errors = None
+	if (request.method == "POST"):
+		contact_form = ContactusForm(request.POST)
+		if contact_form.is_valid():
+			new_contact = contact_form.save(commit=False)
+			new_contact.from_user = request.user
+			new_contact.save()
+			return HttpResponseRedirect("/")
+		else:
+			errors = str(contact_form.errors)
+	contact_form = ContactusForm()
+	template = "clientapp/contactus.html"
+	context = { 'contact_form' : contact_form}
+	return render(request, template, context)
 ##########################################################################################################################                
 #                   
 #                          Adding  Yowsup   Integration 
@@ -87,47 +102,47 @@ def adminReport(request):
 	context = { 'individual_messages' : individual_messages }
 	return render(request, template, context)
 
-yowsup_handler = YowsupWebStack()
+# yowsup_handler = YowsupWebStack()
 
-## Starting the Whatsapp Stack Loop in a new thread. 
-threading.Thread(target=yowsup_handler.start).start()
+# ## Starting the Whatsapp Stack Loop in a new thread. 
+# threading.Thread(target=yowsup_handler.start).start()
 
-## Access to yowsupweb layer
-weblayer = yowsup_handler.get_web_layer()
-weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')    
+# ## Access to yowsupweb layer
+# weblayer = yowsup_handler.get_web_layer()
+# weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')    
 
-def api(request, command):
-	if command == 'status':
-		if weblayer.assertConnected():
-			return HttpResponse(True)
-		else:
-			weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')
-			if weblayer.assertConnected():
-				return HttpResponse(True)			
+# def api(request, command):
+# 	if command == 'status':
+# 		if weblayer.assertConnected():
+# 			return HttpResponse(True)
+# 		else:
+# 			weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')
+# 			if weblayer.assertConnected():
+# 				return HttpResponse(True)			
 	
-	if (command == 'send'):
-		id = request.GET['id']
-		msg_object = WhatsApp_Individual_Message.objects.filter(delivered=False , id=id)
-		if len(msg_object) > 0 :
-			msg_object= msg_object[0]
-			if weblayer.message_send(msg_object.to_contact.number, msg_object.message_format.msg_text):
-				msg_object.delivered=True
-				msg_object.save()
-				return HttpResponse(True)
+# 	if (command == 'send'):
+# 		id = request.GET['id']
+# 		msg_object = WhatsApp_Individual_Message.objects.filter(delivered=False , id=id)
+# 		if len(msg_object) > 0 :
+# 			msg_object= msg_object[0]
+# 			if weblayer.message_send(msg_object.to_contact.number, msg_object.message_format.msg_text):
+# 				msg_object.delivered=True
+# 				msg_object.save()
+# 				return HttpResponse(True)
 
-	## Default Case if nothing else works
-	return HttpResponse(False)
+# 	## Default Case if nothing else works
+# 	return HttpResponse(False)
 
-def api_mainpage(request, id=None):
-	if id == None:
-		msg_formats = WhatsApp_Message_Format.objects.filter(from_user__is_active=True, whatsapp_individual_message__delivered=False).distinct()
-		template = "clientapp/whatsapp_mainpage.html"
-		context = { 'msg_formats' : msg_formats }
-		return render(request, template, context)
-	else:
-		individual_messages = WhatsApp_Individual_Message.objects.filter(message_format__id=id , delivered=False)
-		contacts = [msg.to_contact.number for msg in individual_messages]
-		weblayer.contacts_sync(contacts)
-		template = "clientapp/whatsapp_message.html"
-		context = { 'messages' : individual_messages }
-		return render(request, template, context)
+# def api_mainpage(request, id=None):
+# 	if id == None:
+# 		msg_formats = WhatsApp_Message_Format.objects.filter(from_user__is_active=True, whatsapp_individual_message__delivered=False).distinct()
+# 		template = "clientapp/whatsapp_mainpage.html"
+# 		context = { 'msg_formats' : msg_formats }
+# 		return render(request, template, context)
+# 	else:
+# 		individual_messages = WhatsApp_Individual_Message.objects.filter(message_format__id=id , delivered=False)
+# 		contacts = [msg.to_contact.number for msg in individual_messages]
+# 		weblayer.contacts_sync(contacts)
+# 		template = "clientapp/whatsapp_message.html"
+# 		context = { 'messages' : individual_messages }
+# 		return render(request, template, context)

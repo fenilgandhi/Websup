@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block css %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/morris/morris.css' %}"/>
+        <script src="{% static 'js/jquery.min.js' %}" ></script>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+            <!-- Page-Title -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-box">     
+      {% if errors %}
+      <div class="col-sm-12">
+        <h1 class="text-danger card-box"> {{errors}} </h1>
+      </div>
+      {% else %}
+      <h4 class="m-t-0 header-title"><b>Contacts</b></h4>
+      <br>
+        <div class="row">
+          <div class="col-md-8">
+            <form method="POST" class="form-horizontal" data-parsley-validate novalidate>  
+            {% csrf_token %}
+              <div class="form-group">
+                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Name</b></lable>
+                  <div class="col-md-6">
+                    <input class="form-control" id="id_name" name="name" type="text" maxlength="100" required placeholder="Enter your full Name here..">
+                  </div>                           
+              </div>
+              <div class="form-group">
+                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Mobile Number</b></lable>
+                  <div class="col-md-6">
+                    <input class="form-control" id="id_contact_number" name="contact_number" type="Number" maxlength="14" placeholder="Enter Contact Number here..">
+                  </div>                           
+              </div>
+              <div class="form-group">
+                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Email Adress</b></lable>
+                  <div class="col-md-6">
+                    <input type="Email" name="email_address" smaxlength="100" required placeholder="Enter Email Adress here.." class="form-control"
+                     id="id_email_address">
+                  </div>                           
+              </div>
+              <div class="form-group">
+                  <label class="col-md-2 control-label" for="id_msg_text">Message</label>
+                  <div class="col-md-6">
+                      <textarea type="text" class="form-control" id="id_contact_msg" name="contact_msg" rows="4" cols="20" required maxlength="200" placeholder="Enter your text in 200 words">
+                      </textarea>
+                  </div>
+              </div>
+              	<button class="btn btn-dark btn-lg waves-effect waves-light" type="submit" name="submit">Submit</button> 
+              </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    </div>
+{% endblock content %}
+{% block javascript %}
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/switchery/js/switchery.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/multiselect/js/jquery.multi-select.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/jquery-quicksearch/jquery.quicksearch.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}" ></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/bootstrap-maxlength/bootstrap-maxlength.min.js' %}"></script>
+
+      <script type="text/javascript" src="{% static 'plugins/autocomplete/jquery.mockjax.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/autocomplete/jquery.autocomplete.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'plugins/autocomplete/countries.js' %}"></script>
+      <script type="text/javascript" src="{% static 'pages/autocomplete.js' %}"></script>
+
+      <script type="text/javascript" src="{% static 'pages/jquery.form-advanced.init.js' %}"></script>
+
+      
+      <script type="text/javascript" src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>  
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('form').parsley();
+        });
+      </script>
+{% endblock javascript %}
