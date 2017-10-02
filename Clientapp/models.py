@@ -149,7 +149,9 @@ class WhatsApp_Message_Format(models.Model):
     # msg_img4 = models.FileField(null=True, blank=True)
     # msg_doc = models.FileField(null=True, blank=True)
     
-    
+    def unsent_msg(self):
+        return self.whatsapp_individual_message_set.filter(delivered=False).count()
+
     def __str__(self):
         return "-".join([self.from_user.name, self.campaign_name])
 

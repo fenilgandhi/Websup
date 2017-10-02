@@ -10,7 +10,7 @@
 <section class="container">
 <div class="row">
 	<div class="text-center well">	
-		<h4 id="connection_status_btn" class="btn btn-danger">Disconnected</h4>	
+		<h4 id="connection_status_btn" class="btn btn-danger">Not Connected</h4>	
 	</div>
 	<div class="container well">
 	  <table class="table">
@@ -32,7 +32,7 @@
 	      	<td>{{msg_format.id}}</td>
 	      	<td><a href="/admin/whatsapp/{{msg_format.id}}">{{msg_format.from_user}}</a></td>
 	      	<td>{{msg_format.campaign_name}}</td>
-	      	<td>{{msg_format.whatsapp_individual_message_set.count}}</td>
+	      	<td>{{msg_format.unsent_msg}}</td>
 	      	<td>{{msg_format.added_on}}</td>
 	      	<td>{{msg_format.msg_text}}</td>
 		</tr>
