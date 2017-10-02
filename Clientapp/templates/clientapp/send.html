@@ -95,20 +95,20 @@
               <div class="form-group">
                   <lable class="col-md-2 control-label" for="id_campaign_name"><b>Campaign Name</b></lable>
                   <div class="col-md-6">
-                    <input class="form-control" id="id_campaign_name" name="campaign_name" type="text" maxlength="100" placeholder="Enter Campaign Name here..">
+                    <input class="form-control" id="id_campaign_name" name="campaign_name" type="text" maxlength="100" required placeholder="Enter Campaign Name here..">
                   </div>                           
               </div>
               <div class="form-group">
                   <label class="col-md-2 control-label" for="">Mobile Numbers</label>
                   <div class="col-md-6">
-                      <textarea class="form-control" name="mobile_numbers" id="mobile_numbers" placeholder="Mobile Numbers List"></textarea>
+                      <textarea class="form-control" name="mobile_numbers" id="mobile_numbers" required placeholder="Mobile Numbers List"></textarea>
                       <p><b>Numbers in list</b>  <span id="total"></span></p>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-md-2 control-label" for="id_msg_text">Message</label>
                   <div class="col-md-6">
-                      <textarea type="text" class="form-control" id="id_msg_text" name="msg_text" rows="" cols="" maxlength="1000" placeholder="Enter your text message">
+                      <textarea type="text" class="form-control" id="id_msg_text" name="msg_text" rows="" cols="" maxlength="1000" required placeholder="Enter your text message">
                       </textarea>
                   </div>
               </div>
@@ -169,11 +169,11 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group" class="form-horizontal">
-              <input required type="text" class="form-control" placeholder="Campaign Name">
+              <input type="text" class="form-control" placeholder="Campaign Name">
               <input type="text" class="form-control" placeholder="Adreess">
-              <input data-parsley-type="digits" type="text" class="form-control" placeholder="contact number">
-              <input parsley-type="email" type="email" class="form-control" placeholder="Email id">
-              <input parsley-type="url" type="url" class="form-control" placeholder="Website URL">
+              <input type="text" class="form-control" placeholder="contact number">
+              <input type="email" class="form-control" placeholder="Email id">
+              <input type="url" class="form-control" placeholder="Website URL">
             </div> 
             <button class="btn btn-danger btn-lg waves-effect waves-light" type="submit" name="submit">Submit</button> 
           </div>
