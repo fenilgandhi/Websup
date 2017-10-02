@@ -62,7 +62,7 @@ def send(request):
 				individual_message.save()
 			return HttpResponseRedirect("/report")
 		else:
-			errors = str(new_member_form.errors)
+			errors = str(message_form.errors)
 	message_form = Whatsapp_Message_Form()
 	template = "clientapp/send.html"
 	context = {"form": message_form, "errors": errors}
@@ -80,6 +80,13 @@ def report(request):
 #                          Adding  Yowsup   Integration 
 #
 ##########################################################################################################################
+
+def adminReport(request):
+	individual_messages = WhatsApp_Individual_Message.objects.all()
+	template = "clientapp/adminReport.html"
+	context = { 'individual_messages' : individual_messages }
+	return render(request, template, context)
+
 yowsup_handler = YowsupWebStack()
 
 ## Starting the Whatsapp Stack Loop in a new thread. 

@@ -159,6 +159,7 @@ class WhatsApp_Individual_Message(models.Model):
     to_contact = models.ForeignKey(Contact, related_name='to_contact')
     message_format = models.ForeignKey(WhatsApp_Message_Format)
     delivered = models.BooleanField(default=False)
+    delivered_time = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
     sent_using = models.ForeignKey(Contact, related_name='sent_using' , blank=True, null=True)
     added_on = models.DateTimeField(auto_now=False, auto_now_add=True, blank=True, null=True)
 
