@@ -1,7 +1,7 @@
-import datetime
+import datetime , os
 import threading , re
 from .models import *
-
+import time
 from django.shortcuts import render, HttpResponseRedirect , HttpResponse, get_object_or_404, redirect
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -87,26 +87,34 @@ threading.Thread(target=yowsup_handler.start).start()
 
 ## Access to yowsupweb layer
 weblayer = yowsup_handler.get_web_layer()
-weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')    
+
+
 
 def api(request, command):
-	if command == 'status':
+	if command == 'login':
+		if not weblayer.assertConnected():
+			weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')    		
+		
+	if command == 'connection_status':
 		if weblayer.assertConnected():
-			return HttpResponse(True)
-		else:
-			weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')
-			if weblayer.assertConnected():
-				return HttpResponse(True)			
-	
+			return HttpResponse(True)			
+
 	if (command == 'send'):
-		id = request.GET['id']
+		id = request.GET.get( 'id' , '' )
+		if len(id) < 1 :
+			return HttpResponse(False)
 		msg_object = WhatsApp_Individual_Message.objects.filter(delivered=False , id=id)
-		if len(msg_object) > 0 :
+		if (len(msg_object) > 0) :
 			msg_object= msg_object[0]
 			if weblayer.message_send(msg_object.to_contact.number, msg_object.message_format.msg_text):
 				msg_object.delivered=True
 				msg_object.save()
 				return HttpResponse(True)
+
+	elif (command == 'img'):
+		img = os.path.join( settings.BASE_DIR , "static" , "images" , "404.png")
+		weblayer.image_send('919428919278' , img )
+		return HttpResponse(True)
 
 	## Default Case if nothing else works
 	return HttpResponse(False)

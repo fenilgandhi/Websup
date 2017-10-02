@@ -5,6 +5,7 @@ Clientapp/migrations/*
 __pycache__/
 *.py[cod]
 *$py.class
+*.enc
 
 # Django stuff:
 *.log
