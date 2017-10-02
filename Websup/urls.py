@@ -29,7 +29,7 @@ urlpatterns = [
     # Api
     url(r'^admin/whatsapp$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
     url(r'^admin/whatsapp/(?P<id>[\d]+)/$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
-    url(r'^api/(?P<command>[a-z]+)/$' , staff_member_required(Clientapp.views.api), name="whatsapp_api"),
+    url(r'^api/(?P<command>[a-z_]+)/$' , staff_member_required(Clientapp.views.api), name="whatsapp_api"),
     url(r'^admin/adminReport$', staff_member_required(Clientapp.views.adminReport), name='whatsapp_report'),
 ]
 
