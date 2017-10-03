@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
 
-from .yowsup_integration.stack import *
+# from .yowsup_integration.stack import *
 
 # Create your views here.
 #####################
