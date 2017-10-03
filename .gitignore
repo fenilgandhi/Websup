@@ -1,5 +1,6 @@
 Clientapp/migrations/*
 *.sqlite3
+media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

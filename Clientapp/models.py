@@ -143,11 +143,8 @@ class WhatsApp_Message_Format(models.Model):
     is_approved = models.BooleanField(default=False)
     
     # To implement after django-media setup
-    msg_img1 = models.FileField(null=True, blank=True)
-    msg_img2 = models.FileField(null=True, blank=True)
-    # msg_img3 = models.FileField(null=True, blank=True)
-    # msg_img4 = models.FileField(null=True, blank=True)
-    # msg_doc = models.FileField(null=True, blank=True)
+    msg_img1 = models.ImageField(upload_to='img1' , null=True,blank=True)
+    msg_img2 = models.ImageField(upload_to='img2' , null=True,blank=True)
     
     def unsent_msg(self):
         return self.whatsapp_individual_message_set.filter(delivered=False).count()

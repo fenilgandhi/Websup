@@ -16,8 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
 
-
-# from .yowsup_integration.stack import *
+from .yowsup_integration.stack import *
 
 # Create your views here.
 #####################
@@ -35,7 +34,7 @@ def dashboard(request):
 def send(request):
 	errors = None
 	if (request.method == "POST"):
-		message_form = Whatsapp_Message_Form(request.POST)
+		message_form = Whatsapp_Message_Form(request.POST, request.FILES)
 		mobile_numbers = request.POST["mobile_numbers"]
 		mobile_numbers = re.findall( '\d{10}' , mobile_numbers)
 		if len(mobile_numbers) < 1:
@@ -90,11 +89,6 @@ def contactus(request):
 	template = "clientapp/contactus.html"
 	context = { 'contact_form' : contact_form}
 	return render(request, template, context)
-##########################################################################################################################                
-#                   
-#                          Adding  Yowsup   Integration 
-#
-##########################################################################################################################
 
 def adminReport(request):
 	individual_messages = WhatsApp_Individual_Message.objects.all()
@@ -102,56 +96,19 @@ def adminReport(request):
 	context = { 'individual_messages' : individual_messages }
 	return render(request, template, context)
 
-# yowsup_handler = YowsupWebStack()
 
-# ## Starting the Whatsapp Stack Loop in a new thread. 
-# threading.Thread(target=yowsup_handler.start).start()
+##########################################################################################################################                
+#                   
+#                          Adding  Yowsup   Integration 
+#
+##########################################################################################################################
+yowsup_handler = YowsupWebStack()
 
-<<<<<<< HEAD
-# ## Access to yowsupweb layer
-# weblayer = yowsup_handler.get_web_layer()
-# weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')    
+## Starting the Whatsapp Stack Loop in a new thread. 
+threading.Thread(target=yowsup_handler.start).start()
 
-# def api(request, command):
-# 	if command == 'status':
-# 		if weblayer.assertConnected():
-# 			return HttpResponse(True)
-# 		else:
-# 			weblayer.login( '917016034770' , 'kbjsCUt9oB33CbnU0OlcQaXU6F0=')
-# 			if weblayer.assertConnected():
-# 				return HttpResponse(True)			
-	
-# 	if (command == 'send'):
-# 		id = request.GET['id']
-# 		msg_object = WhatsApp_Individual_Message.objects.filter(delivered=False , id=id)
-# 		if len(msg_object) > 0 :
-# 			msg_object= msg_object[0]
-# 			if weblayer.message_send(msg_object.to_contact.number, msg_object.message_format.msg_text):
-# 				msg_object.delivered=True
-# 				msg_object.save()
-# 				return HttpResponse(True)
-
-# 	## Default Case if nothing else works
-# 	return HttpResponse(False)
-
-# def api_mainpage(request, id=None):
-# 	if id == None:
-# 		msg_formats = WhatsApp_Message_Format.objects.filter(from_user__is_active=True, whatsapp_individual_message__delivered=False).distinct()
-# 		template = "clientapp/whatsapp_mainpage.html"
-# 		context = { 'msg_formats' : msg_formats }
-# 		return render(request, template, context)
-# 	else:
-# 		individual_messages = WhatsApp_Individual_Message.objects.filter(message_format__id=id , delivered=False)
-# 		contacts = [msg.to_contact.number for msg in individual_messages]
-# 		weblayer.contacts_sync(contacts)
-# 		template = "clientapp/whatsapp_message.html"
-# 		context = { 'messages' : individual_messages }
-# 		return render(request, template, context)
-=======
 ## Access to yowsupweb layer
 weblayer = yowsup_handler.get_web_layer()
-
-
 
 def api(request, command):
 	if command == 'login':
@@ -169,15 +126,11 @@ def api(request, command):
 		msg_object = WhatsApp_Individual_Message.objects.filter(delivered=False , id=id)
 		if (len(msg_object) > 0) :
 			msg_object= msg_object[0]
-			if weblayer.message_send(msg_object.to_contact.number, msg_object.message_format.msg_text):
+			if weblayer.send_message(msg_object):
 				msg_object.delivered=True
 				msg_object.save()
 				return HttpResponse(True)
 
-	elif (command == 'img'):
-		img = os.path.join( settings.BASE_DIR , "static" , "images" , "404.png")
-		weblayer.image_send('919428919278' , img )
-		return HttpResponse(True)
 
 	## Default Case if nothing else works
 	return HttpResponse(False)
@@ -195,4 +148,3 @@ def api_mainpage(request, id=None):
 		template = "clientapp/whatsapp_message.html"
 		context = { 'messages' : individual_messages }
 		return render(request, template, context)
->>>>>>> c74c1b9c1e6f8a99cb8881d84d6f0462ddd16f07
