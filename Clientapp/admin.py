@@ -103,7 +103,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('name', 'email', 'password')
         }),
         ('Permissions', {
-            'fields': ('is_active')
+            'fields': ('is_active',)
         }),
     )
     search_fields = ('email',)
