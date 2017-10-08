@@ -30,11 +30,11 @@
 	    <tr>
 	      	<td>Not sent</td>
 	      	<td>{{msg_format.id}}</td>
-	      	<td><a href="/admin/whatsapp/{{msg_format.id}}">{{msg_format.from_user}}</a></td>
-	      	<td>{{msg_format.campaign_name}}</td>
+	      	<td><a href="/admin/whatsapp/{{msg_format.id}}">{{msg_format.user}}</a></td>
+	      	<td>{{msg_format.format_name}}</td>
 	      	<td>{{msg_format.unsent_msg}}</td>
 	      	<td>{{msg_format.added_on}}</td>
-	      	<td>{{msg_format.msg_text}}</td>
+	      	<td>{{msg_format.message_text}}</td>
 		</tr>
 	    {% endfor %}
 	    </tbody>

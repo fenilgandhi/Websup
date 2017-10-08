@@ -27,11 +27,11 @@
 			    <tbody>
 		    	{% for msg in  individual_messages %}
 		    	<tr>
-			    	<td>{{msg.to_contact}}</td>
-                    <td>{{msg.message_format.campaign_name}}</td>
-                    <td>{{msg.message_format.msg_text}}</td>
+			    	<td>{{msg.to_number}}</td>
+                    <td>{{msg.message_format.name}}</td>
+                    <td>{{msg.message_format.message_text}}</td>
                     <td>{{msg.added_on}}</td>
-                    <td>{% if msg.delivered %}<i class="fa fa-check-circle text-success"></i>{%else %} <b>Pending</b> {% endif %}</td>
+                    <td>{% if msg.delivery_status > 0  %}<i class="fa fa-check-circle text-success"></i>{%else %} <b>Pending</b> {% endif %}</td>
 			    </tr>	
 		    	{% endfor %}
 			   </tbody>

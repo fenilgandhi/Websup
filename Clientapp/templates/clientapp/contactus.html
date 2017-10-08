@@ -25,28 +25,28 @@
             <form method="POST" class="form-horizontal" data-parsley-validate novalidate>  
             {% csrf_token %}
               <div class="form-group">
-                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Name</b></lable>
+                  <label class="col-md-2 control-label" for="id_name"><b>Name</b></label>
                   <div class="col-md-6">
                     <input class="form-control" id="id_name" name="name" type="text" maxlength="100" required placeholder="Enter your full Name here..">
                   </div>                           
               </div>
               <div class="form-group">
-                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Mobile Number</b></lable>
+                  <label class="col-md-2 control-label" for="id_contact_number"><b>Mobile Number</b></label>
                   <div class="col-md-6">
                     <input class="form-control" id="id_contact_number" name="contact_number" type="Number" maxlength="14" placeholder="Enter Contact Number here..">
                   </div>                           
               </div>
               <div class="form-group">
-                  <lable class="col-md-2 control-label" for="id_campaign_name"><b>Email Adress</b></lable>
+                  <label class="col-md-2 control-label" for="id_email_address"><b>Email Adress</b></label>
                   <div class="col-md-6">
                     <input type="Email" name="email_address" smaxlength="100" required placeholder="Enter Email Adress here.." class="form-control"
                      id="id_email_address">
                   </div>                           
               </div>
               <div class="form-group">
-                  <label class="col-md-2 control-label" for="id_msg_text">Message</label>
+                  <label class="col-md-2 control-label" for="id_text_message">Message</label>
                   <div class="col-md-6">
-                      <textarea type="text" class="form-control" id="id_contact_msg" name="contact_msg" rows="4" cols="20" required maxlength="200" placeholder="Enter your text in 200 words">
+                      <textarea type="text" class="form-control" id="id_text_message" name="text_message" rows="4" cols="20" required maxlength="200" placeholder="Enter your text in 200 words">
                       </textarea>
                   </div>
               </div>

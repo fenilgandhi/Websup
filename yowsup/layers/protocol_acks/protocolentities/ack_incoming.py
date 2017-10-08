@@ -1,5 +1,7 @@
 from yowsup.structs import ProtocolEntity, ProtocolTreeNode
 from .ack import AckProtocolEntity
+
+
 class IncomingAckProtocolEntity(AckProtocolEntity):
 
     '''
@@ -14,15 +16,18 @@ class IncomingAckProtocolEntity(AckProtocolEntity):
     def setIncomingData(self, _from, timestamp):
         self._from = _from
         self.timestamp = timestamp
-    
+
     def toProtocolTreeNode(self):
         node = super(IncomingAckProtocolEntity, self).toProtocolTreeNode()
         node.setAttribute("from", self._from)
         node.setAttribute("t", self.timestamp)
         return node
 
+    def getParticipant(self):
+        return self._from.split('@')[0]
+
     def __str__(self):
-        out  = super(IncomingAckProtocolEntity, self).__str__()
+        out = super(IncomingAckProtocolEntity, self).__str__()
         out += "From: %s\n" % self._from
         out += "timestamp: %s\n" % self.timestamp
         return out

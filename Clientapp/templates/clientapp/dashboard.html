@@ -55,7 +55,7 @@
               <i class="fa fa-whatsapp text-custom"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">{{ user.queue_messages }}</b></h3>
+              <h3 class="text-dark"><b class="counter">{{ user.queued_credits }}</b></h3>
               <p class="text-muted">Messages in Queue</p>
           </div>
           <div class="clearfix"></div>
@@ -68,7 +68,7 @@
               <i class="fa fa-whatsapp text-info"></i>
           </div>
           <div class="text-right">
-              <h3 class="text-dark"><b class="counter">{{ user.sent_messages }}</b></h3>
+              <h3 class="text-dark"><b class="counter">{{ user.used_credits }}</b></h3>
               <p class="text-muted">Sent Messages</p>
           </div>
           <div class="clearfix"></div>
@@ -123,14 +123,12 @@
                   <th>Whatsapp Plan</th>
                   <th>Message Credits</th>
                   <th>Message Cost</th>
-                  <th>Plan Duration</th>
                 </tr>
                 {% for pd in plan_details %}
                 <tr>
                   <td class="{{ NameOfPlan }}"><i class="fa fa-whatsapp text-dark"></i>   {{ pd.name_of_plan }}</td>
                   <td>{{ pd.credits }}</td>
                   <td>{{ pd.price }}</td>
-                  <td>{{ pd.duration }}</td>
                 </tr>
                 {% endfor %}
               </tbody>

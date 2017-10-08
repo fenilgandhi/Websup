@@ -158,27 +158,14 @@
        <script src="{% static 'plugins/peity/jquery.peity.min.js' %}" ></script>
         <!-- jQuery  -->
        <script src="{% static 'plugins/waypoints/jquery.waypoints.js' %}" ></script>
-       <script src="{% static 'plugins/counterup/jquery.counterup.min.js' %}" ></script>
-      <script src="{% static 'plugins/morris/morris.min.js' %}" ></script>
+       <script src="{% static 'plugins/morris/morris.min.js' %}" ></script>
       <script src="{% static 'plugins/raphael/raphael-min.js' %}" ></script>
       <script src="{% static 'plugins/jquery-knob/jquery.knob.js' %}" ></script>
       <!-- <script src="{% static 'pages/jquery.dashboard.js' %}" ></script> -->
       <script src="{% static 'js/jquery.core.js' %}" ></script>
       <script src="{% static 'js/jquery.app.js' %}" ></script>
         {% block javascript %}
-       {% endblock javascript %}
-            <script type="text/javascript">
-            jQuery(document).ready(function($) {
-                $('.counter').counterUp({
-                    delay: 100,
-                    time: 1200
-                });
-
-                $(".knob").knob();
-
-            });
-        </script>
-
+       {% endblock javascript %}            
 
     </body>
 </html>
