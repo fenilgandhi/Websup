@@ -96,7 +96,7 @@ def adminReport(request):
 yowsup_handler = YowsupWebStack()
 
 # Starting the Whatsapp Stack Loop in a new thread.
-threading.Thread(target=yowsup_handler.start).start()
+#threading.Thread(target=yowsup_handler.start).start()
 
 # Access to yowsupweb layer
 weblayer = yowsup_handler.get_web_layer()

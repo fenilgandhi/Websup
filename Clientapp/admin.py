@@ -141,13 +141,7 @@ class Whatsapp_Number_Admin(admin.ModelAdmin):
 
 class Whatsapp_Message_Format_Admin(admin.ModelAdmin):
     model = Whatsapp_Message_Format
-    list_display = ("format_name", "user", "added_on", "is_approved")
-
-
-class Whatsapp_Individual_Message_Admin(admin.ModelAdmin):
-    model = Whatsapp_Individual_Message
-    list_display = ("message_format", "added_on", "to_number", "delivery_status")
-    readonly_fields = ("added_on", "delivery_time")
+    list_display = ("format_name", "user", "added_on")
 
 
 class ContactUs_Admin(admin.ModelAdmin):
@@ -156,10 +150,27 @@ class ContactUs_Admin(admin.ModelAdmin):
 
 
 admin.site.unregister(Group)
+# admin.site.register(Whatsapp_Plans, Whatsapp_Plans_Admin)
+# admin.site.register(User_Plan, User_Plan_Admin)
+# admin.site.register(Whatsapp_Number, Whatsapp_Number_Admin)
+# admin.site.register(Whatsapp_Message_Format, Whatsapp_Message_Format_Admin)
+# admin.site.register(Whatsapp_Individual_Message, Whatsapp_Individual_Message_Admin)
+# admin.site.register(ContactUs, ContactUs_Admin)
+
+
 admin.site.register(MyUser, UserAdmin)
-admin.site.register(Whatsapp_Plans, Whatsapp_Plans_Admin)
 admin.site.register(User_Plan, User_Plan_Admin)
-admin.site.register(Whatsapp_Number, Whatsapp_Number_Admin)
-admin.site.register(Whatsapp_Message_Format, Whatsapp_Message_Format_Admin)
-admin.site.register(Whatsapp_Individual_Message, Whatsapp_Individual_Message_Admin)
+admin.site.register(Whatsapp_Plans)
 admin.site.register(ContactUs, ContactUs_Admin)
+
+admin.site.register(Whatsapp_Number)
+admin.site.register(Whatsapp_Image)
+admin.site.register(Whatsapp_Text)
+admin.site.register(Whatsapp_vCard)
+
+admin.site.register(Whatsapp_Credentials)
+
+admin.site.register(Text_Delivery)
+admin.site.register(Image_Delivery)
+admin.site.register(vCard_Delivery)
+admin.site.register(Whatsapp_Message_Format)

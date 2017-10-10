@@ -83,24 +83,24 @@ class MyUser(AbstractBaseUser):
             self.save()
 
     def update_credits(self):
-        # Update Total Credits
-        user_plans = User_Plan.objects.filter(user__id=self.id)
-        if len(user_plans) > 0:
-            self.total_credits = sum([user_plan.plan.credits for user_plan in user_plans])
-        else:
-            self.total_credits = 0
+        # # Update Total Credits
+        # user_plans = User_Plan.objects.filter(user__id=self.id)
+        # if len(user_plans) > 0:
+        #     self.total_credits = sum([user_plan.plan.credits for user_plan in user_plans])
+        # else:
+        #     self.total_credits = 0
 
-        # Update Queued Credits
-        queued_messages = Whatsapp_Individual_Message.objects.filter(message_format__user__id=self.id, delivery_status=0).count()
-        self.queued_credits = queued_messages
+        # # Update Queued Credits
+        # queued_messages = Whatsapp_Individual_Message.objects.filter(message_format__user__id=self.id, delivery_status=0).count()
+        # self.queued_credits = queued_messages
 
-        # Update Sent Credits
-        sent_messages = Whatsapp_Individual_Message.objects.filter(message_format__user__id=self.id, delivery_status=1).count()
-        self.used_credits = sent_messages
+        # # Update Sent Credits
+        # sent_messages = Whatsapp_Individual_Message.objects.filter(message_format__user__id=self.id, delivery_status=1).count()
+        # self.used_credits = sent_messages
 
-        # Update Remaining Credits
-        self.remaining_credits = self.total_credits - self.queued_credits - self.used_credits
-
+        # # Update Remaining Credits
+        # self.remaining_credits = self.total_credits - self.queued_credits - self.used_credits
+        pass
         self.save()
 
     def __str__(self):
@@ -161,58 +161,6 @@ class Whatsapp_Number(models.Model):
         verbose_name_plural = 'Whatsapp Contact Number'
 
 
-class Whatsapp_vCard(models.Model):
-    name = models.CharField(verbose_name="vCard Name", max_length=50, blank=False, null=False)
-    person_name = models.CharField(verbose_name="Person Name", max_length=150, blank=False, null=False)
-    company = models.CharField(verbose_name="Company", max_length=200, blank=True)
-    mobile1 = models.CharField(verbose_name="Mobile Number 1", max_length=15, blank=True)
-    mobile2 = models.CharField(verbose_name="Mobile Number 2", max_length=15, blank=True)
-    mobile3 = models.CharField(verbose_name="Mobile Number 3", max_length=15, blank=True)
-    address = models.CharField(verbose_name="Address", max_length=300, blank=True)
-    email = models.EmailField(verbose_name="Email", max_length=50, blank=True)
-    url = models.URLField(verbose_name="Website", blank=True)
-
-
-class Whatsapp_Message_Format(models.Model):
-    format_name = models.CharField(verbose_name="Campaign Name", max_length=100, null=False, blank=True)
-    user = models.ForeignKey(MyUser, null=True)
-    message_text = models.CharField(verbose_name='Text Content', max_length=1500, blank=True, null=True)
-    message_image = models.ImageField(upload_to='img', null=True, blank=True)
-    message_vcard = models.ForeignKey(Whatsapp_vCard, null=True, blank=True)
-
-    added_on = models.DateTimeField(verbose_name='Added On', auto_now=False, auto_now_add=True)
-    is_approved = models.BooleanField(default=False)
-
-    def unsent_msg(self):
-        return self.whatsapp_individual_message_set.filter(delivery_status=False).count()
-
-    def __str__(self):
-        return "-".join([self.user.name, self.format_name])
-
-    class Meta:
-        verbose_name_plural = 'Message Formats'
-
-
-class Whatsapp_Individual_Message(models.Model):
-    '''
-    Delivery Status (default = 0)
-        0   waiting to be delivered
-        1   delivered
-       -1   message rejected for delivery
-    '''
-    message_format = models.ForeignKey(Whatsapp_Message_Format)
-    added_on = models.DateTimeField(verbose_name="Added On", auto_now=False, auto_now_add=True, blank=True, null=True)
-
-    to_number = models.ForeignKey(Whatsapp_Number, related_name='to_whatsapp_number')
-    whatsapp_message_id = models.CharField(verbose_name="Whatsapp generated id", max_length=50, blank=True, null=True)
-    delivery_status = models.IntegerField(default=0)
-    delivery_time = models.DateTimeField(verbose_name="Delivery Time", auto_now=False, auto_now_add=True, blank=True, null=True)
-    sent_using = models.ForeignKey(Whatsapp_Credentials, related_name='sent_using', blank=True, null=True)
-
-    class Meta:
-        verbose_name_plural = 'Individual Message'
-
-
 class ContactUs(models.Model):
     name = models.CharField(verbose_name="name", max_length=25, null=False, blank=False)
     contact_number = models.IntegerField(verbose_name="Mobile Number")
@@ -227,19 +175,77 @@ class ContactUs(models.Model):
         return "-".join([self.name, str(self.added_on)])
 
 
+class Whatsapp_Message_Format(models.Model):
+    format_name = models.CharField(verbose_name="Campaign Name", max_length=100, null=False, blank=True)
+    user = models.ForeignKey(MyUser, null=True)
+    added_on = models.DateTimeField(verbose_name='Added On', auto_now=False, auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
+
+    def unsent_msg(self):
+        pass
+        #return self.whatsapp_individual_message_set.filter(delivery_status=False).count()
+
+    def __str__(self):
+        return "-".join([self.user.name, self.format_name])
+
+    class Meta:
+        verbose_name_plural = 'Message Formats'
+
+
+class Whatsapp_vCard(models.Model):
+    format = models.ForeignKey(Whatsapp_Message_Format)
+    name = models.CharField(verbose_name="vCard Name", max_length=50, blank=False, null=False)
+    person_name = models.CharField(verbose_name="Person Name", max_length=150, blank=False, null=False)
+    company = models.CharField(verbose_name="Company", max_length=200, blank=True)
+    mobile1 = models.CharField(verbose_name="Mobile Number 1", max_length=15, blank=True)
+    mobile2 = models.CharField(verbose_name="Mobile Number 2", max_length=15, blank=True)
+    mobile3 = models.CharField(verbose_name="Mobile Number 3", max_length=15, blank=True)
+    address = models.CharField(verbose_name="Address", max_length=300, blank=True)
+    email = models.EmailField(verbose_name="Email", max_length=50, blank=True)
+    url = models.URLField(verbose_name="Website", blank=True)
+
+
+class Whatsapp_Image(models.Model):
+    format = models.ForeignKey(Whatsapp_Message_Format)
+    image = models.ImageField(upload_to='img', null=True, blank=True)
+
+
+class Whatsapp_Text(models.Model):
+    format = models.ForeignKey(Whatsapp_Message_Format)
+    text = models.CharField(verbose_name='Text Content', max_length=1500, blank=True, null=True)
+
+
+class Delivery_Status(models.Model):
+    to_number = models.ForeignKey(Whatsapp_Number, related_name='to_whatsapp_number')
+    added_on = models.DateTimeField(auto_now_add=True, auto_now=False)
+    whatsapp_message_id = models.CharField(verbose_name="Whatsapp generated id", max_length=50, blank=True, null=True)
+    delivery_status = models.IntegerField(default=0)
+    delivery_time = models.DateTimeField(verbose_name="Delivery Time", auto_now=False, auto_now_add=True, blank=True, null=True)
+    sent_using = models.ForeignKey(Whatsapp_Credentials, related_name='sent_using', blank=True, null=True)
+
+
+class Text_Delivery(Delivery_Status):
+    message_text = models.ForeignKey(Whatsapp_Text)
+
+
+class Image_Delivery(Delivery_Status):
+    message_image = models.ForeignKey(Whatsapp_Image)
+
+
+class vCard_Delivery(Delivery_Status):
+    message = models.ForeignKey(Whatsapp_vCard)
+
 #################################################################################################
 # 									Model Form													#
 #################################################################################################
 class Whatsapp_New_Message_Form(ModelForm):
     class Meta:
         model = Whatsapp_Message_Format
-        exclude = ('user', 'message_vcard', 'is_approved')
+        exclude = ('user', 'message_vcard')
 
 
 class Whatsapp_Indvidual_Message_Form(ModelForm):
-    class Meta:
-        model = Whatsapp_Individual_Message
-        exclude = ("delivery_status", "delivery_time", "sent_using", "whatsapp_message_id")
+    pass
 
 
 class ContactusForm(ModelForm):
