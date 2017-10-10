@@ -1,5 +1,4 @@
 import Clientapp.views
-from Clientapp.admin import admin_view
 
 from django.conf import settings
 from django.conf.urls import url
@@ -8,8 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-
-admin.site.admin_view = admin_view
 
 # Websup URL Configuration
 urlpatterns = [

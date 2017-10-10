@@ -110,7 +110,7 @@ class MyUser(AbstractBaseUser):
         verbose_name_plural = 'Website User'
 
 
-class Whatsapp_Plans(models.Model):
+class Whatsapp_Plan(models.Model):
     name_of_plan = models.CharField(verbose_name="Plan name", max_length=50, null=False, blank=False)
     price = models.IntegerField(verbose_name="Amount Paid")
     credits = models.IntegerField(verbose_name="Offered Credits")
@@ -126,7 +126,7 @@ class Whatsapp_Plans(models.Model):
 
 class User_Plan(models.Model):
     user = models.ForeignKey(MyUser)
-    plan = models.ForeignKey(Whatsapp_Plans)
+    plan = models.ForeignKey(Whatsapp_Plan)
     paid_amount = models.IntegerField(verbose_name='Paid Amount', default=0)
     started_on = models.DateField(verbose_name="Subscribed On", auto_now=False, auto_now_add=True)
 
@@ -179,8 +179,7 @@ class Whatsapp_Message_Format(models.Model):
     format_name = models.CharField(verbose_name="Campaign Name", max_length=100, null=False, blank=True)
     user = models.ForeignKey(MyUser, null=True)
     added_on = models.DateTimeField(verbose_name='Added On', auto_now=False, auto_now_add=True)
-    is_approved = models.BooleanField(default=False)
-
+    
     def unsent_msg(self):
         pass
         #return self.whatsapp_individual_message_set.filter(delivery_status=False).count()

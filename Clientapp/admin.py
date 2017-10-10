@@ -1,14 +1,13 @@
-from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib import admin
 from .models import *
+from .forms import *
 
 from functools import update_wrapper
 from django.http import Http404
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-
 
 def admin_view(view, cacheable=False):
     """
@@ -28,53 +27,6 @@ def admin_view(view, cacheable=False):
         inner = csrf_protect(inner)
 
     return update_wrapper(inner, view)
-
-
-class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
-    class Meta:
-        model = MyUser
-        readonly_fields = ("created_on", "is_admin")
-        fields = ('name', 'email', 'password')
-
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
-        return password2
-
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super(UserCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
-
-
-class UserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    password hash display field.
-    """
-    # password = ReadOnlyPasswordHashField()
-
-    class Meta:
-        model = MyUser
-        readonly_fields = ("created_on", "is_admin")
-        fields = ('name', 'email', 'password', 'total_credits', 'remaining_credits', 'used_credits', 'queued_credits')
-    
-    def clean_password(self):
-        # Regardless of what the user provides, return the initial value.
-        # This is done here, rather than on the field, because the
-        # field does not have access to the initial value
-        return self.initial["password"]
 
 
 class UserAdmin(BaseUserAdmin):
@@ -111,8 +63,8 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 
-class Whatsapp_Plans_Admin(admin.ModelAdmin):
-    model = Whatsapp_Plans
+class Whatsapp_Plan_Admin(admin.ModelAdmin):
+    model = Whatsapp_Plan
     fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -134,43 +86,71 @@ class User_Plan_Admin(admin.ModelAdmin):
     list_display = ("user", "plan", "started_on", "paid_amount")
 
 
-class Whatsapp_Number_Admin(admin.ModelAdmin):
-    model = Whatsapp_Number
-    list_display = ("number",)
-
-
-class Whatsapp_Message_Format_Admin(admin.ModelAdmin):
-    model = Whatsapp_Message_Format
-    list_display = ("format_name", "user", "added_on")
-
-
 class ContactUs_Admin(admin.ModelAdmin):
     model = ContactUs
     list_display = ("name", "contact_number", "email_address", "text_message")
 
 
+class Whatsapp_Number_Admin(admin.ModelAdmin):
+    model = Whatsapp_Number
+    list_display = ("number",)
+
+
+class Whatsapp_Credentials_Admin(admin.ModelAdmin):
+    model = Whatsapp_Credentials
+
+
+class Whatsapp_Text_Admin(admin.ModelAdmin):
+    model = Whatsapp_Text
+
+
+class Whatsapp_Image_Admin(admin.ModelAdmin):
+    model = Whatsapp_Image
+
+
+class Whatsapp_Image_Inline(admin.TabularInline):
+    model = Whatsapp_Image
+    form = Whatsapp_Image_Form
+    extra = 1
+
+
+class Whatsapp_vCard_Admin(admin.ModelAdmin):
+    model = Whatsapp_vCard
+
+
+class Text_Delivery_Admin(admin.ModelAdmin):
+    model = Text_Delivery
+
+
+class Image_Delivery_Admin(admin.ModelAdmin):
+    model = Image_Delivery
+
+
+class vCard_Delivery_Admin(admin.ModelAdmin):
+    model = vCard_Delivery
+
+
+class Whatsapp_Message_Format_Admin(admin.ModelAdmin):
+    model = Whatsapp_Message_Format
+    list_display = ("format_name", "user", "added_on")
+    inlines = (Whatsapp_Image_Inline,)
+
+
+admin.site.admin_view = admin_view
 admin.site.unregister(Group)
-# admin.site.register(Whatsapp_Plans, Whatsapp_Plans_Admin)
-# admin.site.register(User_Plan, User_Plan_Admin)
-# admin.site.register(Whatsapp_Number, Whatsapp_Number_Admin)
-# admin.site.register(Whatsapp_Message_Format, Whatsapp_Message_Format_Admin)
-# admin.site.register(Whatsapp_Individual_Message, Whatsapp_Individual_Message_Admin)
-# admin.site.register(ContactUs, ContactUs_Admin)
-
-
 admin.site.register(MyUser, UserAdmin)
+admin.site.register(Whatsapp_Plan)
 admin.site.register(User_Plan, User_Plan_Admin)
-admin.site.register(Whatsapp_Plans)
+
 admin.site.register(ContactUs, ContactUs_Admin)
 
-admin.site.register(Whatsapp_Number)
-admin.site.register(Whatsapp_Image)
-admin.site.register(Whatsapp_Text)
-admin.site.register(Whatsapp_vCard)
+admin.site.register(Whatsapp_Credentials, Whatsapp_Credentials_Admin)
+admin.site.register(Whatsapp_Number, Whatsapp_Number_Admin)
+admin.site.register(Whatsapp_Image, Whatsapp_Image_Admin)
+admin.site.register(Whatsapp_Text, Whatsapp_Text_Admin)
+admin.site.register(Whatsapp_vCard, Whatsapp_vCard_Admin)
 
-admin.site.register(Whatsapp_Credentials)
-
-admin.site.register(Text_Delivery)
-admin.site.register(Image_Delivery)
-admin.site.register(vCard_Delivery)
-admin.site.register(Whatsapp_Message_Format)
+admin.site.register(Text_Delivery, Text_Delivery_Admin)
+admin.site.register(Image_Delivery, Image_Delivery_Admin)
+admin.site.register(vCard_Delivery, vCard_Delivery_Admin)
+admin.site.register(Whatsapp_Message_Format, Whatsapp_Message_Format_Admin)
