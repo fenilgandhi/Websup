@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.forms import ModelForm
 
 
 # Custom User Manager
@@ -161,7 +160,7 @@ class Whatsapp_Number(models.Model):
         verbose_name_plural = 'Whatsapp Contact Number'
 
 
-class ContactUs(models.Model):
+class Contactus(models.Model):
     name = models.CharField(verbose_name="name", max_length=25, null=False, blank=False)
     contact_number = models.IntegerField(verbose_name="Mobile Number")
     email_address = models.EmailField(verbose_name="Email Address", max_length=255, unique=True, null=False, blank=False)
@@ -233,21 +232,3 @@ class Image_Delivery(Delivery_Status):
 
 class vCard_Delivery(Delivery_Status):
     message = models.ForeignKey(Whatsapp_vCard)
-
-#################################################################################################
-# 									Model Form													#
-#################################################################################################
-class Whatsapp_New_Message_Form(ModelForm):
-    class Meta:
-        model = Whatsapp_Message_Format
-        exclude = ('user', 'message_vcard')
-
-
-class Whatsapp_Indvidual_Message_Form(ModelForm):
-    pass
-
-
-class ContactusForm(ModelForm):
-    class Meta:
-        model = ContactUs
-        exclude = ("",)

@@ -1,6 +1,7 @@
 import threading, re
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from Clientapp.models import *
+from Clientapp.forms import *
 from Clientapp.yowsup_integration.stack import *
 
 
@@ -19,41 +20,52 @@ def dashboard(request):
 
 
 def send(request):
-    errors = None
-    if (request.method == "POST"):
-        message_form = Whatsapp_New_Message_Form(request.POST, request.FILES)
-        mobile_numbers = request.POST["mobile_numbers"]
-        mobile_numbers = re.findall('\d{10}', mobile_numbers)
-        if len(mobile_numbers) < 1:
-            errors = "No Valid Mobile Number Found"
-        if len(mobile_numbers) > request.user.remaining_credits:
-            errors = "You do not have enough credits to send this message"
-        elif message_form.is_valid():
-            new_message = message_form.save(commit=False)
-            new_message.user = request.user
-            new_message.save()
-            for mobile_number in mobile_numbers:
-                mobile_number = '91' + mobile_number
-                contact_detail = Whatsapp_Number.objects.filter(number=mobile_number)
-                if len(contact_detail) < 1:
-                    contact_detail = Whatsapp_Number()
-                    contact_detail.number = mobile_number
-                    contact_detail.save()
-                else:
-                    contact_detail = contact_detail[0]
+    Text_Formset = forms.modelformset_factory(Whatsapp_Text, exclude=("format",), extra=3)
+    Image_Formset = forms.modelformset_factory(Whatsapp_Image, exclude=("format",), extra=3)
+    vCard_Formset = forms.modelformset_factory(Whatsapp_vCard, exclude=("format",), extra=3)
 
-                individual_message = Whatsapp_Individual_Message()
-                individual_message.to_number = contact_detail
-                individual_message.message_format = new_message
-                individual_message.save()
-                individual_message.message_format.user.queue_credit()
-            return HttpResponseRedirect("/report")
-        else:
-            errors = str(message_form.errors)
-    message_form = Whatsapp_New_Message_Form()
+    text_formset = Text_Formset(prefix="text")
+    image_formset = Image_Formset(prefix="image")
+    vcard_formset = vCard_Formset(prefix="vcard")
     template = "clientapp/send.html"
-    context = {"form": message_form, "errors": errors}
+    context = {'text_formset': text_formset, 'image_formset': image_formset, 'vcard_formset': vcard_formset}
     return render(request, template, context)
+
+    # errors = None
+    # if (request.method == "POST"):
+    #     message_form = Whatsapp_New_Message_Form(request.POST, request.FILES)
+    #     mobile_numbers = request.POST["mobile_numbers"]
+    #     mobile_numbers = re.findall('\d{10}', mobile_numbers)
+    #     if len(mobile_numbers) < 1:
+    #         errors = "No Valid Mobile Number Found"
+    #     if len(mobile_numbers) > request.user.remaining_credits:
+    #         errors = "You do not have enough credits to send this message"
+    #     elif message_form.is_valid():
+    #         new_message = message_form.save(commit=False)
+    #         new_message.user = request.user
+    #         new_message.save()
+    #         for mobile_number in mobile_numbers:
+    #             mobile_number = '91' + mobile_number
+    #             contact_detail = Whatsapp_Number.objects.filter(number=mobile_number)
+    #             if len(contact_detail) < 1:
+    #                 contact_detail = Whatsapp_Number()
+    #                 contact_detail.number = mobile_number
+    #                 contact_detail.save()
+    #             else:
+    #                 contact_detail = contact_detail[0]
+
+    #             individual_message = Whatsapp_Individual_Message()
+    #             individual_message.to_number = contact_detail
+    #             individual_message.message_format = new_message
+    #             individual_message.save()
+    #             individual_message.message_format.user.queue_credit()
+    #         return HttpResponseRedirect("/report")
+    #     else:
+    #         errors = str(message_form.errors)
+    # message_form = Whatsapp_New_Message_Form()
+    # template = "clientapp/send.html"
+    # context = {"form": message_form, "errors": errors}
+    # return render(request, template, context)
 
 
 def report(request):

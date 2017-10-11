@@ -86,8 +86,8 @@ class User_Plan_Admin(admin.ModelAdmin):
     list_display = ("user", "plan", "started_on", "paid_amount")
 
 
-class ContactUs_Admin(admin.ModelAdmin):
-    model = ContactUs
+class Contactus_Admin(admin.ModelAdmin):
+    model = Contactus
     list_display = ("name", "contact_number", "email_address", "text_message")
 
 
@@ -110,7 +110,6 @@ class Whatsapp_Image_Admin(admin.ModelAdmin):
 
 class Whatsapp_Image_Inline(admin.TabularInline):
     model = Whatsapp_Image
-    form = Whatsapp_Image_Form
     extra = 1
 
 
@@ -142,7 +141,7 @@ admin.site.register(MyUser, UserAdmin)
 admin.site.register(Whatsapp_Plan)
 admin.site.register(User_Plan, User_Plan_Admin)
 
-admin.site.register(ContactUs, ContactUs_Admin)
+admin.site.register(Contactus, Contactus_Admin)
 
 admin.site.register(Whatsapp_Credentials, Whatsapp_Credentials_Admin)
 admin.site.register(Whatsapp_Number, Whatsapp_Number_Admin)

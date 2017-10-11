@@ -71,8 +71,6 @@
     </head>
 {% endblock css %}
 
-{% block content %}
-
 <div class="container">
             <!-- Page-Title -->
   <div class="row">
@@ -155,6 +153,29 @@
 </form>
   {% endif %}
 </div>
+{% block content %}
+**********************************************************************************************
+<form id="myform" method="post" action="">
+    {% for form in text_formset.forms %}
+        <p>{{form.as_p}}</p>
+    {% endfor %}
+
+    {% for form in image_formset.forms %}
+        <p>{{form.as_p}}</p>
+    {% endfor %}
+
+    {% for form in vcard_formset.forms %}
+        <p>{{form.as_p}}</p>
+    {% endfor %}
+
+    {{ text_formset.management_form }}
+    {{ image_formset.management_form }}
+    {{ vcard_formset.management_form }}
+    
+</form>
+
+  
+**********************************************************************************************
 {% endblock %}
 
 {% block script %}
@@ -172,7 +193,8 @@
 {% endblock %}
 
 {% block javascript %}
-  
+      <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+      
       <script type="text/javascript" src="{% static 'plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'plugins/switchery/js/switchery.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'plugins/multiselect/js/jquery.multi-select.js' %}"></script>
@@ -194,7 +216,8 @@
       <script type="text/javascript" src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>  
       <script type="text/javascript">
         $(document).ready(function() {
-          $('form').parsley();
+          $('#myform p').formset();
+
         });
       </script>
 

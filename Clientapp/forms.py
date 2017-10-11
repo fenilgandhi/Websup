@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+import Clientapp.models as models
 
 
 class UserCreationForm(forms.ModelForm):
@@ -9,7 +9,7 @@ class UserCreationForm(forms.ModelForm):
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
-        model = MyUser
+        model = models.MyUser
         readonly_fields = ("created_on", "is_admin")
         fields = ('name', 'email', 'password')
 
@@ -38,10 +38,11 @@ class UserChangeForm(forms.ModelForm):
     # password = ReadOnlyPasswordHashField()
 
     class Meta:
-        model = MyUser
+        model = models.MyUser
         readonly_fields = ("created_on", "is_admin")
         fields = ('name', 'email', 'password', 'total_credits', 'remaining_credits', 'used_credits', 'queued_credits')
-    
+
+
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
         # This is done here, rather than on the field, because the
@@ -49,7 +50,30 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
+class Contactus_Form(forms.ModelForm):
+    class Meta:
+        model = models.Contactus
+        exclude = ("",)
+
+
+class Whatsapp_Text_Form(forms.ModelForm):
+    class Meta:
+        model = models.Whatsapp_Text
+        exclude = "",
+
 class Whatsapp_Image_Form(forms.ModelForm):
     class Meta:
-        model = Whatsapp_Image
+        model = models.Whatsapp_Image
         exclude = "",
+
+
+class Whatsapp_vCard_Form(forms.ModelForm):
+    class Meta:
+        model = models.Whatsapp_vCard
+        exclude = "",
+
+
+class Whatsapp_New_Message_Form(forms.ModelForm):
+    class Meta:
+        model = models.Whatsapp_Message_Format
+        exclude = ('user', 'added_on')
