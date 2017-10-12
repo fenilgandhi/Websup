@@ -61,21 +61,35 @@ class Whatsapp_Text_Form(forms.ModelForm):
         model = models.Whatsapp_Text
         exclude = ("format",)
         widgets = {
-            'text' : forms.TextInput(attrs={ 'class':'form-control' }),
+            'text' : forms.Textarea(attrs={ 'class':'form-control'}),
         }
 
 
 class Whatsapp_Image_Form(forms.ModelForm):
     class Meta:
         model = models.Whatsapp_Image
-        exclude = "",
-
+        exclude = ("format",)
+        label= { 'image' : forms.ClearableFileInput(attrs={'class' : 'control-label'}),
+        }
+        widgets = {
+            'image' : forms.FileInput(attrs={ 'class':'filestyle' }),
+        }
 
 class Whatsapp_vCard_Form(forms.ModelForm):
     class Meta:
         model = models.Whatsapp_vCard
-        exclude = "",
-
+        exclude = ("format",)
+        widgets = {
+            'name'        : forms.TextInput(attrs={ 'class':'form-control' }),
+            'person_name' : forms.TextInput(attrs={ 'class':' form-control' }),
+            'company'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'mobile1'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'mobile2'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'mobile3'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'address'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'email'       : forms.EmailInput(attrs={ 'class':' form-control' }),
+            'url'         : forms.URLInput(attrs={ 'class':' form-control' }),
+        }
 
 class Whatsapp_New_Message_Form(forms.ModelForm):
     class Meta:

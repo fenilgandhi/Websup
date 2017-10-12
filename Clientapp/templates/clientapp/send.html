@@ -155,27 +155,45 @@
 </div>
 {% block content %}
 **********************************************************************************************
-<form id="myform" method="post" action="">
-    {% for form in text_formset.forms %}
-        <p>{{form.as_p}}</p>
-    {% endfor %}
-
-    {% for form in image_formset.forms %}
-        <p>{{form.as_p}}</p>
-    {% endfor %}
-
-    {% for form in vcard_formset.forms %}
-        <p>{{form.as_p}}</p>
-    {% endfor %}
-
-    {{ text_formset.management_form }}
-    {{ image_formset.management_form }}
-    {{ vcard_formset.management_form }}
-    
-</form>
-
-  
-**********************************************************************************************
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">      
+      <div class="card-box">
+      <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
+      <br>
+        <div class="row">
+          <div class="col-md-8">
+            <form  id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data" action="">        
+              <div class="form-group">
+                {{ text_formset.management_form }}
+                <lable class="col-md-2 control-label" for="id_format_name"><b>Campaign Name</b></lable>
+                <div class="col-md-8">
+                  {% for form in text_formset.forms %}
+                      <p>{{form.text}}</p>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="form-group">
+              {{ image_formset.management_form }}
+                <label class="control-label" for="id_message_image">Image</label>
+                  {% for form in image_formset.forms %}
+                    <p>{{form.image}}</p>
+                  {% endfor %}
+                  </div>
+              </div>         
+              {% for form in vcard_formset.forms %}
+                <p>{{form.as_p}}</p>
+              {% endfor %}
+              {{ vcard_formset.management_form }}
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+*********************************************************************************************
 {% endblock %}
 
 {% block script %}

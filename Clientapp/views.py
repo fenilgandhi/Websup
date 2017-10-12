@@ -10,7 +10,7 @@ from Clientapp.yowsup_integration.stack import *
 #####################
 def dashboard(request):
     request.user.update_credits()
-    plan_details = Whatsapp_Plans.objects.filter(is_active=True)
+    plan_details = Whatsapp_Plan.objects.filter(is_active=True)
     user_plan_details = User_Plan.objects.filter(user=request.user).order_by('-id')
     if len(user_plan_details) > 0:
         user_plan_details = user_plan_details[0]
