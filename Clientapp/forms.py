@@ -59,7 +59,11 @@ class Contactus_Form(forms.ModelForm):
 class Whatsapp_Text_Form(forms.ModelForm):
     class Meta:
         model = models.Whatsapp_Text
-        exclude = "",
+        exclude = ("format",)
+        widgets = {
+            'text' : forms.TextInput(attrs={ 'class':'form-control' }),
+        }
+
 
 class Whatsapp_Image_Form(forms.ModelForm):
     class Meta:

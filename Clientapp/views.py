@@ -20,7 +20,7 @@ def dashboard(request):
 
 
 def send(request):
-    Text_Formset = forms.modelformset_factory(Whatsapp_Text, exclude=("format",), extra=3)
+    Text_Formset = forms.modelformset_factory(Whatsapp_Text, form=Whatsapp_Text_Form, exclude=("format",), extra=3)
     Image_Formset = forms.modelformset_factory(Whatsapp_Image, exclude=("format",), extra=3)
     vCard_Formset = forms.modelformset_factory(Whatsapp_vCard, exclude=("format",), extra=3)
 
