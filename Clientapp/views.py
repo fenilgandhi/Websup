@@ -2,7 +2,7 @@ import threading, re
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from Clientapp.models import *
 from Clientapp.forms import *
-from Clientapp.yowsup_integration.stack import *
+# from Clientapp.yowsup_integration.stack import *
 
 
 #####################
@@ -103,46 +103,46 @@ def adminReport(request):
 #                          Adding  Yowsup   Integration
 #
 # #######################################################################################################################
-yowsup_handler = YowsupWebStack()
+# yowsup_handler = YowsupWebStack()
 
-# Starting the Whatsapp Stack Loop in a new thread.
-threading.Thread(target=yowsup_handler.start).start()
+# # Starting the Whatsapp Stack Loop in a new thread.
+# threading.Thread(target=yowsup_handler.start).start()
 
-# Access to yowsupweb layer
-weblayer = yowsup_handler.get_web_layer()
-
-
-def api(request, command):
-    if command == 'login':
-        if not weblayer.assertConnected():
-            weblayer.login('917016034770', 'XfZURrqRo/0eC2+v16D29xstqBQ=')
-
-    if command == 'connection_status':
-        return HttpResponse( weblayer.assertConnected() )
-
-    if (command == 'send'):
-        id = request.GET.get('id', '')
-        if len(id) < 1:
-            return HttpResponse(False)
-        msg_object = Whatsapp_Individual_Message.objects.filter(delivery_status=0, id=id)
-        if (len(msg_object) > 0):
-            msg_object = msg_object[0]
-            weblayer.send_message(msg_object)
-            return HttpResponse(True)
-    # Default Case if nothing else works
-    return HttpResponse(False)
+# # Access to yowsupweb layer
+# weblayer = yowsup_handler.get_web_layer()
 
 
-def api_mainpage(request, id=None):
-    if id is None:
-        msg_formats = Whatsapp_Message_Format.objects.filter(user__is_active=True, whatsapp_individual_message__delivery_status=0).distinct()
-        template = "clientapp/whatsapp_mainpage.html"
-        context = {'msg_formats': msg_formats}
-        return render(request, template, context)
-    else:
-        individual_messages = Whatsapp_Individual_Message.objects.filter(message_format__id=id, delivery_status=0)
-        contacts = [msg.to_number.number for msg in individual_messages]
-        weblayer.contacts_sync(contacts)
-        template = "clientapp/whatsapp_message.html"
-        context = {'messages': individual_messages}
-        return render(request, template, context)
+# def api(request, command):
+#     if command == 'login':
+#         if not weblayer.assertConnected():
+#             weblayer.login('917016034770', 'XfZURrqRo/0eC2+v16D29xstqBQ=')
+
+#     if command == 'connection_status':
+#         return HttpResponse( weblayer.assertConnected() )
+
+#     if (command == 'send'):
+#         id = request.GET.get('id', '')
+#         if len(id) < 1:
+#             return HttpResponse(False)
+#         msg_object = Whatsapp_Individual_Message.objects.filter(delivery_status=0, id=id)
+#         if (len(msg_object) > 0):
+#             msg_object = msg_object[0]
+#             weblayer.send_message(msg_object)
+#             return HttpResponse(True)
+#     # Default Case if nothing else works
+#     return HttpResponse(False)
+
+
+# def api_mainpage(request, id=None):
+#     if id is None:
+#         msg_formats = Whatsapp_Message_Format.objects.filter(user__is_active=True, whatsapp_individual_message__delivery_status=0).distinct()
+#         template = "clientapp/whatsapp_mainpage.html"
+#         context = {'msg_formats': msg_formats}
+#         return render(request, template, context)
+#     else:
+#         individual_messages = Whatsapp_Individual_Message.objects.filter(message_format__id=id, delivery_status=0)
+#         contacts = [msg.to_number.number for msg in individual_messages]
+#         weblayer.contacts_sync(contacts)
+#         template = "clientapp/whatsapp_message.html"
+#         context = {'messages': individual_messages}
+#         return render(request, template, context)
