@@ -50,6 +50,7 @@ class UserAdmin(BaseUserAdmin):
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
+    
     add_fieldsets = (
         (None, {
             'fields': ('name', 'email', 'password')
@@ -112,6 +113,14 @@ class Whatsapp_Image_Inline(admin.TabularInline):
     model = Whatsapp_Image
     extra = 1
 
+class Whatsapp_Text_Inline(admin.TabularInline):
+    model = Whatsapp_Text
+    extra = 1
+
+class Whatsapp_vCard_Inline(admin.TabularInline):
+    model = Whatsapp_vCard
+    extra = 1
+
 
 class Whatsapp_vCard_Admin(admin.ModelAdmin):
     model = Whatsapp_vCard
@@ -132,7 +141,7 @@ class vCard_Delivery_Admin(admin.ModelAdmin):
 class Whatsapp_Message_Format_Admin(admin.ModelAdmin):
     model = Whatsapp_Message_Format
     list_display = ("format_name", "user", "added_on")
-    inlines = (Whatsapp_Image_Inline,)
+    inlines = (Whatsapp_Text_Inline, Whatsapp_Image_Inline, Whatsapp_vCard_Inline)
 
 
 admin.site.admin_view = admin_view

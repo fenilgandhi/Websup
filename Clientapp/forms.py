@@ -13,6 +13,7 @@ class UserCreationForm(forms.ModelForm):
         readonly_fields = ("created_on", "is_admin")
         fields = ('name', 'email', 'password')
 
+
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
@@ -61,7 +62,7 @@ class Whatsapp_Text_Form(forms.ModelForm):
         model = models.Whatsapp_Text
         exclude = ("format",)
         widgets = {
-            'text' : forms.Textarea(attrs={ 'class':'form-control'}),
+            'text' : forms.Textarea(attrs={ 'class':'form-control', 'rows' : 3, 'cols' : 10}),
         }
 
 
@@ -69,11 +70,10 @@ class Whatsapp_Image_Form(forms.ModelForm):
     class Meta:
         model = models.Whatsapp_Image
         exclude = ("format",)
-        label= { 'image' : forms.ClearableFileInput(attrs={'class' : 'control-label'}),
-        }
         widgets = {
             'image' : forms.FileInput(attrs={ 'class':'filestyle' }),
         }
+
 
 class Whatsapp_vCard_Form(forms.ModelForm):
     class Meta:
@@ -91,7 +91,16 @@ class Whatsapp_vCard_Form(forms.ModelForm):
             'url'         : forms.URLInput(attrs={ 'class':' form-control' }),
         }
 
+
 class Whatsapp_New_Message_Form(forms.ModelForm):
     class Meta:
         model = models.Whatsapp_Message_Format
         exclude = ('user', 'added_on')
+        widgets = {
+            'format_name'        : forms.TextInput(attrs={ 
+                'class':'form-control',
+                'maxlength' : "100",
+                'required' : '',
+                'placeholder' : "Enter Campaign Name here..",
+            }),
+        }

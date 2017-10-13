@@ -120,7 +120,7 @@ class Whatsapp_Plan(models.Model):
         return self.name_of_plan
 
     class Meta:
-        verbose_name_plural = 'Whatsapp Packages'
+        verbose_name_plural = 'Whatsapp Plan'
 
 
 class User_Plan(models.Model):
@@ -139,7 +139,7 @@ class User_Plan(models.Model):
         return "-".join([self.user.email, self.plan.name_of_plan])
 
     class Meta:
-        verbose_name_plural = 'User Packages'
+        verbose_name_plural = 'User Plan'
 
 
 class Whatsapp_Credentials(models.Model):
@@ -187,7 +187,7 @@ class Whatsapp_Message_Format(models.Model):
         return "-".join([self.user.name, self.format_name])
 
     class Meta:
-        verbose_name_plural = 'Message Formats'
+        verbose_name_plural = 'Whatsapp Message Formats'
 
 
 class Whatsapp_vCard(models.Model):
@@ -202,15 +202,24 @@ class Whatsapp_vCard(models.Model):
     email = models.EmailField(verbose_name="Email", max_length=50, blank=True)
     url = models.URLField(verbose_name="Website", blank=True)
 
+    class Meta:
+        verbose_name_plural = 'Whatsapp vCard'
+
 
 class Whatsapp_Image(models.Model):
     format = models.ForeignKey(Whatsapp_Message_Format)
     image = models.ImageField(upload_to='img', null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = 'Whatsapp Image'
+
 
 class Whatsapp_Text(models.Model):
     format = models.ForeignKey(Whatsapp_Message_Format)
     text = models.CharField(verbose_name='Text Content', max_length=1500, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Whatsapp Text'
 
 
 class Delivery_Status(models.Model):
@@ -221,14 +230,26 @@ class Delivery_Status(models.Model):
     delivery_time = models.DateTimeField(verbose_name="Delivery Time", auto_now=False, auto_now_add=True, blank=True, null=True)
     sent_using = models.ForeignKey(Whatsapp_Credentials, related_name='sent_using', blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = 'Delivery Status'
+
 
 class Text_Delivery(Delivery_Status):
     message_text = models.ForeignKey(Whatsapp_Text)
+
+    class Meta:
+        verbose_name_plural = 'Delivery Text'
 
 
 class Image_Delivery(Delivery_Status):
     message_image = models.ForeignKey(Whatsapp_Image)
 
+    class Meta:
+        verbose_name_plural = 'Delivery Image'
+
 
 class vCard_Delivery(Delivery_Status):
     message = models.ForeignKey(Whatsapp_vCard)
+
+    class Meta:
+        verbose_name_plural = 'Delivery vCard'
