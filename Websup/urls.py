@@ -25,9 +25,9 @@ urlpatterns = [
     url(r'^user/passwordchanged/$', login_required(auth_views.password_change_done), name='password_change_done'),
 
     # Api
-    # url(r'^admin/whatsapp$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
-    # url(r'^admin/whatsapp/(?P<id>[\d]+)/$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
-    # url(r'^api/(?P<command>[a-z_]+)/$', staff_member_required(Clientapp.views.api), name="whatsapp_api"),
+    url(r'^admin/whatsapp$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
+    url(r'^admin/whatsapp/(?P<id>[\d]+)/$', staff_member_required(Clientapp.views.api_mainpage), name='whatsapp_gui'),
+    url(r'^api/(?P<command>[a-z_]+)/$', staff_member_required(Clientapp.views.api), name="whatsapp_api"),
     url(r'^admin/adminReport$', staff_member_required(Clientapp.views.adminReport), name='whatsapp_report'),
 
 ]

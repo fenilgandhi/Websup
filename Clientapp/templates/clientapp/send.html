@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block css %}
-        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/switchery/css/switchery.min.css' %}" placeholder="" />
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'plugins/morris/morris.css' %}"/>
         <script src="{% static 'js/jquery.min.js' %}" ></script>
@@ -67,133 +67,76 @@
 
             }
           }
-    </script>
-    </head>
+        </script>
 {% endblock css %}
 
+{% block content %}
 <div class="container">
-            <!-- Page-Title -->
   <div class="row">
     {% if errors %}
-    <div class="col-sm-12">
-      <h1 class="text-danger card-box"> {{errors}} </h1>
-    </div>
-    {% else %}
-    
-    <div class="col-sm-12">
-      
-      <div class="card-box">
-        
-      <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
-      <br>
-        <div class="row">
-          <div class="col-md-8">
-            <form method="POST" class="form-horizontal" enctype="multipart/form-data" >  
-            {% csrf_token %}
-              <div class="form-group">
-                  <lable class="col-md-2 control-label" for="id_format_name"><b>Campaign Name</b></lable>
-                  <div class="col-md-6">
-                    <input class="form-control" id="id_format_name" name="format_name" type="text" maxlength="100" required placeholder="Enter Campaign Name here..">
-                  </div>                           
-              </div>
-              <div class="form-group">
-                  <label class="col-md-2 control-label" for="">Mobile Numbers</label>
-                  <div class="col-md-6">
-                      <textarea class="form-control" name="mobile_numbers" id="mobile_numbers" required placeholder="Mobile Numbers List"></textarea>
-                      <p><b>Numbers in list</b>  <span id="total"></span></p>
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="col-md-2 control-label" for="id_message_text">Message</label>
-                  <div class="col-md-6">
-                      <textarea type="text" class="form-control" id="id_message_text" name="message_text" rows="4" cols="100" maxlength="1000" required placeholder="Enter your text message">
-                      </textarea>
-                  </div>
-              </div>
-          </div>
-        </div>
+      <div class="col-md-12">
+          <h1 class="text-danger card-box">{{errors}}</h1>
       </div>
-    </div>
+    {% endif %}
 
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card-box">
-      <h4 class="m-t-0 header-title"><b>Upload Image / Video / PDF</b></h4>
-        <div class="row">
-          <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label" for="id_message_image">Image</label>
-                  <input id="id_message_image" name="message_image" type="file" class="filestyle" onchange="ValidateSize(this)" data-buttonbefore="true" accept="Image/*">
-                </div>
-          </div>
-        </div>
-<!--        
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card-box">
-      <h4 class="m-t-0 header-title"><b>Create VCard</b></h4>
-      <br>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group" class="form-horizontal">
-              <input type="text" class="form-control" placeholder="Campaign Name">
-              <input type="text" class="form-control" placeholder="Adreess">
-              <input type="text" class="form-control" placeholder="contact number">
-              <input type="email" class="form-control" placeholder="Email id">
-              <input type="url" class="form-control" placeholder="Website URL">
-            </div> 
--->
-            <button class="btn btn-danger btn-lg waves-effect waves-light" type="submit" name="submit">Submit</button> 
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>        
-</form>
-  {% endif %}
-</div>
-{% block content %}
-**********************************************************************************************
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">      
-      <div class="card-box">
+  <div class="col-sm-12">
+  <div class="card-box">
       <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
       <br>
-        <div class="row">
-          <div class="col-md-8">
-            <form  id="myform" method="POST" class="form-horizontal" enctype="multipart/form-data" action="">        
-              <div class="form-group">
-                {{ text_formset.management_form }}
-                <lable class="col-md-2 control-label" for="id_format_name"><b>Campaign Name</b></lable>
-                <div class="col-md-8">
-                  {% for form in text_formset.forms %}
-                      <p>{{form.text}}</p>
-                  {% endfor %}
-                </div>
-              </div>
-              <div class="form-group">
-              {{ image_formset.management_form }}
-                <label class="control-label" for="id_message_image">Image</label>
-                  {% for form in image_formset.forms %}
-                    <p>{{form.image}}</p>
-                  {% endfor %}
-                  </div>
-              </div>         
-              {% for form in vcard_formset.forms %}
-                <p>{{form.as_p}}</p>
-              {% endfor %}
-              {{ vcard_formset.management_form }}
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <div class="row">
+      
+  <form method="POST" class="form-horizontal" enctype="multipart/form-data" >
+  {% csrf_token %}
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="id_format_name"><b>Campaign Name</b></label>
+    <div class="col-md-6">
+      {{ message_form.format_name }}      
+    </div>                           
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="">Mobile Numbers</label>
+    <div class="col-md-6">
+        <textarea class="form-control" name="mobile_numbers" id="mobile_numbers" required placeholder="Mobile Numbers List"></textarea>
+        <p><b>Numbers in list</b>  <span id="total"></span></p>
     </div>
   </div>
+
+  <div class="form-group">
+  {% for form in text_formset.forms %}
+  <div class="row">
+    <label id="{{form.text.auto_id}}" class="col-md-2 control-label">{{form.text.label}}</label>
+    <div class="col-md-6">{{form.text}} </div>
+  </div>
+  {% endfor %}
+  {{ text_formset.management_form }}
+  </div>
+
+  <div class="form-group">
+  {% for form in image_formset.forms %}
+  <div class="row">
+      <label id="{{form.image.auto_id}}" class="col-md-2 control-label">{{form.image.label}}</label>
+        <div class="col-md-6">{{form.image}} </div>
+    </div>
+  {% endfor %}
+  </div>
+  {{ image_formset.management_form }}
+
+  <div class="form-group">
+  {% for form in vcard_formset.forms %}
+  <div class="row">
+   {{form.as_p}} 
+  {# <label id="{{form.name.auto_id}}" class="col-md-2 control-label">{{form.name.label}}</label>
+    <div class="col-md-6"> {{ form.name }} </div>
+    <label id="{{form.person_name.auto_id}}" class="col-md-2 control-label">{{form.person_name.label}}</label>
+    <div class="col-md-6"> {{ form.person_name }} </div>
+    <label id="{{form.name.auto_id}}" class="col-md-2 control-label">{{form.name.label}}</label>
+    <div class="col-md-6"> {{ form.company }} </div> #}
+ </div>
+  {% endfor %}
+  {{ vcard_formset.management_form }}
+  
+</form>
 </div>
-*********************************************************************************************
 {% endblock %}
 
 {% block script %}
@@ -238,6 +181,4 @@
 
         });
       </script>
-
-
 {% endblock javascript %}
