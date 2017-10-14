@@ -81,28 +81,29 @@ class Whatsapp_vCard_Form(forms.ModelForm):
         exclude = ("format",)
         widgets = {
             'name' : forms.TextInput(attrs={ 
-                'class':'form-control', 
+                'class' : 'form-control', 
                 'maxlength' : "100", 
                 'placeholder' : "Enter Campaign Name here..", 
                 }),
             'person_name' : forms.TextInput(attrs={
-                'class':' form-control', 
+                'class': 'form-control', 
                 'maxlength' : "100", 
-                'placeholder' : "Enter Campaign Name here..", }),
-            # 'company'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            # 'mobile1'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            # 'mobile2'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            # 'mobile3'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            # 'address'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            # 'email'       : forms.EmailInput(attrs={ 'class':' form-control' }),
-            # 'url'         : forms.URLInput(attrs={ 'class':' form-control' }),
+                'placeholder' : "Enter Campaign Name here..", 
+            }),
+            'company'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'mobile1'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'mobile2'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'mobile3'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'address'     : forms.TextInput(attrs={ 'class':' form-control' }),
+            'email'       : forms.EmailInput(attrs={ 'class':' form-control' }),
+            'url'         : forms.URLInput(attrs={ 'class':' form-control' }),
         }
 
 
 class Whatsapp_New_Message_Form(forms.ModelForm):
     class Meta:
         model = models.Whatsapp_Message_Format
-        exclude = ('user', 'added_on')
+        exclude = ('user', 'added_on', 'mobile_numbers')
         widgets = {
             'format_name' : forms.TextInput(attrs={ 
                 'class':'form-control',

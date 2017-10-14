@@ -78,64 +78,82 @@
           <h1 class="text-danger card-box">{{errors}}</h1>
       </div>
     {% endif %}
+  </div>
 
-  <div class="col-sm-12">
-  <div class="card-box">
-      <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
-      <br>
-      <div class="row">
-      
   <form method="POST" class="form-horizontal" enctype="multipart/form-data" >
   {% csrf_token %}
-  <div class="form-group">
-    <label class="col-md-2 control-label" for="id_format_name"><b>Campaign Name</b></label>
-    <div class="col-md-6">
-      {{ message_form.format_name }}      
-    </div>                           
-  </div>
-  <div class="form-group">
-    <label class="col-md-2 control-label" for="">Mobile Numbers</label>
-    <div class="col-md-6">
-        <textarea class="form-control" name="mobile_numbers" id="mobile_numbers" required placeholder="Mobile Numbers List"></textarea>
-        <p><b>Numbers in list</b>  <span id="total"></span></p>
-    </div>
+  <div class="row">
+  <div class="col-sm-12 card-box">
+      <h4 class="m-t-0 header-title"><b>Send whatsapp messages</b></h4>
+      <br>
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="id_format_name"><b>Advertisement Name</b></label>
+        <div class="col-md-6">
+          {{ message_form.format_name }}      
+        </div>                           
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="">Mobile Numbers</label>
+        <div class="col-md-6">
+          <textarea class="form-control" name="mobile_numbers" id="mobile_numbers" required placeholder="Mobile Numbers List"></textarea>
+          <p><b>Numbers in list</b>  <span id="total"></span></p>
+        </div>
   </div>
 
-  <div class="form-group">
-  {% for form in text_formset.forms %}
-  <div class="row">
-    <label id="{{form.text.auto_id}}" class="col-md-2 control-label">{{form.text.label}}</label>
-    <div class="col-md-6">{{form.text}} </div>
+
   </div>
-  {% endfor %}
-  {{ text_formset.management_form }}
   </div>
 
-  <div class="form-group">
-  {% for form in image_formset.forms %}
   <div class="row">
-      <label id="{{form.image.auto_id}}" class="col-md-2 control-label">{{form.image.label}}</label>
-        <div class="col-md-6">{{form.image}} </div>
-    </div>
-  {% endfor %}
-  </div>
-  {{ image_formset.management_form }}
-
-  <div class="form-group">
-  {% for form in vcard_formset.forms %}
-  <div class="row">
-   {{form.as_p}} 
-  {# <label id="{{form.name.auto_id}}" class="col-md-2 control-label">{{form.name.label}}</label>
-    <div class="col-md-6"> {{ form.name }} </div>
-    <label id="{{form.person_name.auto_id}}" class="col-md-2 control-label">{{form.person_name.label}}</label>
-    <div class="col-md-6"> {{ form.person_name }} </div>
-    <label id="{{form.name.auto_id}}" class="col-md-2 control-label">{{form.name.label}}</label>
-    <div class="col-md-6"> {{ form.company }} </div> #}
- </div>
-  {% endfor %}
-  {{ vcard_formset.management_form }}
+  <div class="card-box">
+  <table class="table text-formset">
+    {{ text_formset.management_form }}
+    {% for form in text_formset.forms %}
+    <tr>
+      <td>{{form.text.label}}<td>
+      <td>{{form.text}}<td>
+    </tr>
+    {% endfor %}
+  </table>
   
-</form>
+  </div>
+  </div>
+    
+  <div class="row">
+  <div class="card-box">
+  <table class="table image-formset">
+    {{ image_formset.management_form }}
+    {% for form in image_formset.forms %}
+    <tr>
+      <td>{{form.image.label}}<td>
+      <td>{{form.image}}<td>
+    </tr>
+    {% endfor %}
+  </table>  
+  </div>
+  </div>
+
+  <ul>
+    {{ vcard_formset.management_form }}
+    {% for form in vcard_formset.forms %}
+    <div class="row">
+    <li class="vcard-formset card-box" >
+      <div class="row">
+        {% for field in form %}        
+          <div class="col-md-2">{{field.label_tag}}</div>
+          <div class="col-md-4">{{field }}</div>
+        {% endfor %}
+      </div>
+    </li>
+    </div>
+    {% endfor %} 
+  </ul>
+  
+
+
+
+  <button type="submit" class="btn btn-danger btn-block">Submit</button>
+  </form>
 </div>
 {% endblock %}
 
@@ -176,9 +194,14 @@
       
       <script type="text/javascript" src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>  
       <script type="text/javascript">
-        $(document).ready(function() {
-          $('#myform p').formset();
+        function addbutton() {
+        }
+        function deletebutton() {}
 
+        $(document).ready(function() {
+          $('.text-formset').formset( {addText: 'Add Item', deleteText: 'X', prefix: '{{text_formset.prefix}}' } );
+          $('.image-formset').formset( {addText: 'Add Item', deleteText: 'X',prefix: '{{image_formset.prefix}}' });
+          $('.vcard-formset').formset( {addText: 'Add Item', deleteText: 'X',prefix: '{{vcard_formset.prefix}}' } );
         });
       </script>
 {% endblock javascript %}

@@ -65,41 +65,30 @@ class MyUser(AbstractBaseUser):
     def is_staff(self):
         return self.is_active
 
-    def queue_credit(self):
-        self.remaining_credits -= 1
-        self.queued_credits += 1
-        if (self.remaining_credits < 0):
-            self.update_credits()
-        else:
-            self.save()
-
-    def use_credit(self):
-        self.queued_credits -= 1
-        self.used_credits += 1
-        if (self.queued_credits < 0):
-            self.update_credits()
-        else:
-            self.save()
-
     def update_credits(self):
-        # # Update Total Credits
-        # user_plans = User_Plan.objects.filter(user__id=self.id)
-        # if len(user_plans) > 0:
-        #     self.total_credits = sum([user_plan.plan.credits for user_plan in user_plans])
-        # else:
-        #     self.total_credits = 0
+        # Update Total Credits
+        user_plans = User_Plan.objects.filter(user__id=self.id)
+        if len(user_plans) > 0:
+            self.total_credits = sum([user_plan.plan.credits for user_plan in user_plans])
+        else:
+            self.total_credits = 0
 
-        # # Update Queued Credits
-        # queued_messages = Whatsapp_Individual_Message.objects.filter(message_format__user__id=self.id, delivery_status=0).count()
-        # self.queued_credits = queued_messages
+        # Update Queued Credits
+        queued_messages = Text_Delivery.objects.filter(message_text__format__user__id=self.id, delivery_status=0).count()
+        + Image_Delivery.objects.filter(message_image__format__user__id=self.id, delivery_status=0).count()
+        + vCard_Delivery.objects.filter(message__format__user__id=self.id, delivery_status=0).count()
 
-        # # Update Sent Credits
-        # sent_messages = Whatsapp_Individual_Message.objects.filter(message_format__user__id=self.id, delivery_status=1).count()
-        # self.used_credits = sent_messages
+        self.queued_credits = queued_messages
 
-        # # Update Remaining Credits
-        # self.remaining_credits = self.total_credits - self.queued_credits - self.used_credits
-        pass
+        # Update Sent Credits
+        sent_messages = Text_Delivery.objects.filter(message_text__format__user__id=self.id, delivery_status=1).count()
+        + Image_Delivery.objects.filter(message_image__format__user__id=self.id, delivery_status=1).count()
+        + vCard_Delivery.objects.filter(message__format__user__id=self.id, delivery_status=1).count()
+
+        self.used_credits = sent_messages
+
+        # Update Remaining Credits
+        self.remaining_credits = self.total_credits - self.queued_credits - self.used_credits
         self.save()
 
     def __str__(self):
@@ -175,13 +164,17 @@ class Contactus(models.Model):
 
 
 class Whatsapp_Message_Format(models.Model):
-    format_name = models.CharField(verbose_name="Campaign Name", max_length=100, null=False, blank=True)
-    user = models.ForeignKey(MyUser, null=True)
+    format_name = models.CharField(verbose_name="Advertisement Name", max_length=100, null=False, blank=True)
+    user = models.ForeignKey(MyUser)
     added_on = models.DateTimeField(verbose_name='Added On', auto_now=False, auto_now_add=True)
-    
+    mobile_numbers = models.ManyToManyField(Whatsapp_Number)
+
     def unsent_msg(self):
-        pass
-        #return self.whatsapp_individual_message_set.filter(delivery_status=False).count()
+        a = Text_Delivery.objects.filter(message_text__format=self, delivery_status=0).count()
+        b = Image_Delivery.objects.filter(message_image__format=self, delivery_status=0).count()
+        c = vCard_Delivery.objects.filter(message__format=self, delivery_status=0).count()
+        return a+b+c
+        
 
     def __str__(self):
         return "-".join([self.user.name, self.format_name])
@@ -210,6 +203,9 @@ class Whatsapp_Image(models.Model):
     format = models.ForeignKey(Whatsapp_Message_Format)
     image = models.ImageField(upload_to='img', null=True, blank=True)
 
+    def __str__(self):
+            return "{0}".format(self.image.url)
+
     class Meta:
         verbose_name_plural = 'Whatsapp Image'
 
@@ -217,6 +213,9 @@ class Whatsapp_Image(models.Model):
 class Whatsapp_Text(models.Model):
     format = models.ForeignKey(Whatsapp_Message_Format)
     text = models.CharField(verbose_name='Text Content', max_length=1500, blank=True, null=True)
+
+    def __str__(self):
+        return "{0}".format(self.text)
 
     class Meta:
         verbose_name_plural = 'Whatsapp Text'
@@ -229,6 +228,9 @@ class Delivery_Status(models.Model):
     delivery_status = models.IntegerField(default=0)
     delivery_time = models.DateTimeField(verbose_name="Delivery Time", auto_now=False, auto_now_add=True, blank=True, null=True)
     sent_using = models.ForeignKey(Whatsapp_Credentials, related_name='sent_using', blank=True, null=True)
+
+    def __str__(self):
+        return "{0}-{1}".format( self.to_number.number, self.delivery_status)
 
     class Meta:
         verbose_name_plural = 'Delivery Status'

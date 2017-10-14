@@ -140,6 +140,7 @@ class vCard_Delivery_Admin(admin.ModelAdmin):
 
 class Whatsapp_Message_Format_Admin(admin.ModelAdmin):
     model = Whatsapp_Message_Format
+    #readonly_fields = "mobile_numbers",
     list_display = ("format_name", "user", "added_on")
     inlines = (Whatsapp_Text_Inline, Whatsapp_Image_Inline, Whatsapp_vCard_Inline)
 
