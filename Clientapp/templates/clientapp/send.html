@@ -99,55 +99,54 @@
           <p><b>Numbers in list</b>  <span id="total"></span></p>
         </div>
   </div>
-
-
   </div>
   </div>
 
   <div class="row">
   <div class="card-box">
-  <table class="table text-formset">
+  <div class="text-formset">
     {{ text_formset.management_form }}
+    <div class="form-group">
     {% for form in text_formset.forms %}
-    <tr>
-      <td>{{form.text.label}}<td>
-      <td>{{form.text}}<td>
-    </tr>
+      <div class="col-md-2 control-label">{{form.text.label}}</div>
+      <div class="col-md-6">{{form.text}}</div>    
     {% endfor %}
-  </table>
-  
+    </div> 
+  </div>
   </div>
   </div>
     
   <div class="row">
   <div class="card-box">
-  <table class="table image-formset">
+  <div class="image-formset">
+    
     {{ image_formset.management_form }}
+    <div class="form-group">
     {% for form in image_formset.forms %}
-    <tr>
-      <td>{{form.image.label}}<td>
-      <td>{{form.image}}<td>
-    </tr>
+      <div class="col-md-2 control-label">{{form.image.label_tag}}</div>
+      <div class="col-md-6">{{form.image}}</div>
     {% endfor %}
-  </table>  
+   </div> 
+  </div>
   </div>
   </div>
 
-  <ul>
-    {{ vcard_formset.management_form }}
-    {% for form in vcard_formset.forms %}
-    <div class="row">
-    <li class="vcard-formset card-box" >
-      <div class="row">
-        {% for field in form %}        
-          <div class="col-md-2">{{field.label_tag}}</div>
-          <div class="col-md-4">{{field }}</div>
-        {% endfor %}
-      </div>
-    </li>
-    </div>
+  
+  <div class="row">
+  <div class=" card-box">
+  <div class="vcard-formset">
+  {{ vcard_formset.management_form }}
+  <div class="form-group">
+  {% for form in vcard_formset.forms %}  
+      {% for field in form %}        
+        <div class="col-md-2 control-label">{{field.label_tag}}</div>
+        <div class="col-md-4">{{field}}</div>
+      {% endfor %}
+  </div>
+  </div>
+  </div>
+  </div>
     {% endfor %} 
-  </ul>
   
 
 

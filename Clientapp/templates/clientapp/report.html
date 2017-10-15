@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block css %}
-    <title>Bluk Whatsapp Report</title>
+    <title>Bulk Whatsapp Report</title>
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/jquery.dataTables.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/buttons.bootstrap.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/datatables/responsive.bootstrap.min.css' %}"/>
@@ -15,55 +15,58 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card-box table-responsive">
-			<table id="datatable-buttons" class="table table-hover">
-			    <thead>
-			    <tr>
-			        <th>Contact Number</th>
-			        <th>Campaign Name</th>
-			        <th>Message Text</th>
-			        <th>Added On</th>
-			        <th>Status</th>
-			    </tr>
-			    </thead>
-			    <tbody>
-		    	{% for msg in  individual_messages %}
-		    	<tr>
-			    	<td>{{msg.to_number}}</td>
-                    <td>{{msg.message_format.format_name}}</td>
-                    <td>{{msg.message_format.message_text}}</td>
+            <table id="datatable-buttons" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Contact Number</th>
+                    <th>Message Add Time</th>
+                    <th>Message ID</th>
+                    <th>Delivery Status</th>
+                    <th>Delivery Status</th>
+                    <th>Send Using</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for msg in  individual_messages %}
+                <tr>
+                    <td>{{msg.to_number}}</td>
                     <td>{{msg.added_on}}</td>
-                    <td>{% if msg.delivery_status > 0 %}<i class="fa fa-check-circle text-success"></i>{%else %} <b>Pending</b> {% endif %}</td>
-			    </tr>	
-		    	{% endfor %}
-			   </tbody>
-			</table>
-		</div>
-	</div>
+                    <td>{{msg.whatsapp_message_id}}</td>
+                    <td>{% if msg.delivery_status > 0 %}<i class="fa fa-check-circle text-success"></i>{%else %}<i class="fa fa-exclamation-circle"></i> {% endif %}</td>
+                    <td>{{msg.delivery_time}}</td>
+                    <td>{{msg.sent_using}}</td>
+
+                </tr>   
+                {% endfor %}
+               </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </html>
 {% endblock %}
 {% block javascript %}
-	<script>
-    	var resizefunc = [];
-	</script>
+    <script>
+        var resizefunc = [];
+    </script>
 
-	<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
-	<script src="{% static 'plugins/datatables/dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables/dataTables.bootstrap.js' %}"></script>
 
-	<script src="{% static 'plugins/datatables/dataTables.buttons.min.js' %}"></script>
-	<script src="{% static 'plugins/datatables/buttons.bootstrap.min.js' %}"></script>
-	
-	<script src="{% static 'plugins/datatables/buttons.html5.min.js' %}"></script>
-	<script src="{% static 'plugins/datatables/buttons.print.min.js' %}"></script>
-	
-	<script src="{% static 'plugins/datatables/responsive.bootstrap.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables/buttons.bootstrap.min.js' %}"></script>
+    
+    <script src="{% static 'plugins/datatables/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables/buttons.print.min.js' %}"></script>
+    
+    <script src="{% static 'plugins/datatables/responsive.bootstrap.min.js' %}"></script>
     
     <script src="{% static 'plugins/datatables/moment.min.js' %}"></script>
     <script src="{% static 'plugins/datatables/datetime-moment.js' %}"></script>
-	
-	<script src="{% static 'pages/datatables.init.js' %}"></script>
+    
+    <script src="{% static 'pages/datatables.init.js' %}"></script>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {
         $.fn.dataTable.moment( 'HH:mm MMM D, YY' );
         

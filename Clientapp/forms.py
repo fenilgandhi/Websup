@@ -83,20 +83,42 @@ class Whatsapp_vCard_Form(forms.ModelForm):
             'name' : forms.TextInput(attrs={ 
                 'class' : 'form-control', 
                 'maxlength' : "100", 
-                'placeholder' : "Enter Campaign Name here..", 
+                'placeholder' : "Enter VCard Name here..", 
                 }),
             'person_name' : forms.TextInput(attrs={
                 'class': 'form-control', 
                 'maxlength' : "100", 
-                'placeholder' : "Enter Campaign Name here..", 
+                'placeholder' : "Enter Person Name here..", 
             }),
-            'company'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            'mobile1'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            'mobile2'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            'mobile3'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            'address'     : forms.TextInput(attrs={ 'class':' form-control' }),
-            'email'       : forms.EmailInput(attrs={ 'class':' form-control' }),
-            'url'         : forms.URLInput(attrs={ 'class':' form-control' }),
+            'company'     : forms.TextInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "100", 
+                'placeholder' : "Enter Company Name here..",  }),
+            'mobile1'     : forms.TextInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "12", 
+                'placeholder' : "Enter Mobile Number 1 here..", 
+                 }),
+            'mobile2'     : forms.TextInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "12", 
+                'placeholder' : "Enter Mobile Number  here..",  }),
+            'mobile3'     : forms.TextInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "12", 
+                'placeholder' : "Enter Mobile Number 3 here..",  }),
+            'address'     : forms.TextInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "100", 
+                'placeholder' : "Enter Address here..",  }),
+            'email'       : forms.EmailInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "100", 
+                'placeholder' : "Enter Email Address here..",  }),
+            'url'         : forms.URLInput(attrs={ 
+                'class':' form-control',
+                'maxlength' : "100", 
+                'placeholder' : "Enter Website URL here..",  }),
         }
 
 
