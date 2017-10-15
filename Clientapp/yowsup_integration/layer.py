@@ -21,6 +21,7 @@ from yowsup.env import YowsupEnv
 from Clientapp.models import *
 
 
+
 class YowsupWebLayer(YowInterfaceLayer):
     EVENT_START = "org.openwhatsapp.yowsup.event.cli.start"
     DISCONNECT_ACTION_EXIT = 1
@@ -82,9 +83,9 @@ class YowsupWebLayer(YowInterfaceLayer):
         self.connected = False
 
     # (lv4) Send a request to lower layer to send a file to given ip
-    def doSendMedia(self, mediaType, filePath, url, to, ip=None, caption=None, object=None):
+    def doSendMedia(self, mediaType, filePath, url, to, ip=None, object=None):
         if mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_IMAGE:
-            entity = ImageDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption=caption)
+            entity = ImageDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to)
             if (object is not None):
                 object.whatsapp_message_id = entity._id
                 object.save()
@@ -95,13 +96,13 @@ class YowsupWebLayer(YowInterfaceLayer):
         self.toLower(entity)
 
     # (lv3) From a given (number,file) , find upload status or start a new upload
-    def onRequestUploadResult(self, jid, mediaType, filePath, resultRequestUploadIqProtocolEntity, requestUploadIqProtocolEntity, caption=None, object=None):
+    def onRequestUploadResult(self, jid, mediaType, filePath, resultRequestUploadIqProtocolEntity, requestUploadIqProtocolEntity, object=None):
         if resultRequestUploadIqProtocolEntity.isDuplicate():
             self.doSendMedia(mediaType, filePath, resultRequestUploadIqProtocolEntity.getUrl(), jid,
-                             resultRequestUploadIqProtocolEntity.getIp(), caption, object)
+                             resultRequestUploadIqProtocolEntity.getIp(),  object)
         else:
             def successFn(filePath, jid, url):
-                return self.doSendMedia(mediaType, filePath, url, jid, resultRequestUploadIqProtocolEntity.getIp(), caption, object)
+                return self.doSendMedia(mediaType, filePath, url, jid, resultRequestUploadIqProtocolEntity.getIp(), object)
             mediaUploader = MediaUploader(jid, self.getOwnJid(), filePath,
                                           resultRequestUploadIqProtocolEntity.getUrl(),
                                           resultRequestUploadIqProtocolEntity.getResumeOffset(),
@@ -109,7 +110,7 @@ class YowsupWebLayer(YowInterfaceLayer):
             mediaUploader.start()
 
     # (lv2) Send a media file to a number
-    def media_send(self, number, path, mediaType, caption=None , object=None):
+    def media_send(self, number, path, mediaType, object=None):
         if self.assertConnected():
             entity = OutgoingChatstateProtocolEntity(ChatstateProtocolEntity.STATE_TYPING, self.aliasToJid(number))
             self.toLower(entity)
@@ -118,7 +119,7 @@ class YowsupWebLayer(YowInterfaceLayer):
             entity = RequestUploadIqProtocolEntity(mediaType, filePath=path)
 
             def successFn(successEntity, originalEntity):
-                return self.onRequestUploadResult(jid, mediaType, path, successEntity, originalEntity, caption, object)
+                return self.onRequestUploadResult(jid, mediaType, path, successEntity, originalEntity, object)
 
             def errorFn(errorEntity, originalEntity):
                 return self.onRequestUploadError(jid, path, errorEntity, originalEntity)
@@ -169,7 +170,7 @@ class YowsupWebLayer(YowInterfaceLayer):
             entity = GetSyncIqProtocolEntity(contacts)
             self.toLower(entity)
 
-    def message_send(self, mobilenumber, content):
+    def send_text_message(self, mobilenumber, content):
         'Send a single message to a given contact(if it is in contacts) and user is connected'
         entity = OutgoingChatstateProtocolEntity(ChatstateProtocolEntity.STATE_TYPING, self.aliasToJid(mobilenumber))
         self.toLower(entity)
@@ -180,21 +181,23 @@ class YowsupWebLayer(YowInterfaceLayer):
 
     def send_message(self, object):
         mobilenumber = object.to_number.number
-        text_message = object.message_format.message_text
-        if self.assertConnected():
-            if sys.version_info >= (3, 0):
-                text_message = text_message.encode("utf-8")
 
-            if bool(object.message_format.message_image) and bool(os.path.isfile(object.message_format.message_image.path)):
-                image = object.message_format.message_image.path
-                if len(object.message_format.message_text) > 0:
-                    caption = object.message_format.message_text
-                else:
-                    caption = None
-                self.media_send(mobilenumber, image, RequestUploadIqProtocolEntity.MEDIA_TYPE_IMAGE, caption, object=object)
-            else:
-                object.whatsapp_message_id = self.message_send(mobilenumber, text_message)
+        if self.assertConnected():
+            ## Find type of message (text, image, vcard)
+            if hasattr(object , 'text_delivery'):
+                if sys.version_info >= (3, 0):
+                    text_message = object.text_delivery.message_text.text.encode("utf-8")
+
+                object.whatsapp_message_id = self.send_text_message(mobilenumber, text_message)
                 object.save()
+                
+            elif hasattr(object, 'image_delivery') and os.path.isfile(object.image_delivery.message_image.image.path):
+                image = object.image_delivery.message_image.image.path
+                self.media_send(mobilenumber, image, RequestUploadIqProtocolEntity.MEDIA_TYPE_IMAGE, object=object)
+            
+            elif hasattr(object , 'vcard_delivery'):
+                pass
+    
             # self.output("Sent A New Message" + str(mobilenumber) + str(content))
             return True
         return False
@@ -203,11 +206,10 @@ class YowsupWebLayer(YowInterfaceLayer):
     def onAck(self, entity):
         date = datetime.datetime.fromtimestamp(int(entity.timestamp)).strftime('%Y-%m-%d %H:%M:%S')
         if ((entity.getClass() == "message") and (entity.tag == "ack")):
-            object = Whatsapp_Individual_Message.objects.filter(whatsapp_message_id=entity._id)
+            object = Delivery_Status.objects.filter(whatsapp_message_id=entity._id)
             if len(object) > 0:
                 object = object[0]
                 object.delivery_status = 1
                 object.delivered_time = date
                 object.save()
-                object.message_format.user.use_credit()
             print(entity.getParticipant(), entity.getClass(), entity.tag, date)

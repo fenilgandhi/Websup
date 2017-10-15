@@ -8,8 +8,6 @@ from Clientapp.yowsup_integration.stack import *
 #####################
 #   User Views
 #####################
-
-
 def dashboard(request):
     request.user.update_credits()
     plan_details = Whatsapp_Plan.objects.filter(is_active=True)
@@ -76,6 +74,7 @@ def send(request):
                         whatsapp_text_delivery = Text_Delivery()
                         whatsapp_text_delivery.to_number = contact
                         whatsapp_text_delivery.message_text = text_message
+                        whatsapp_text_delivery.message_format = new_message_format
                         whatsapp_text_delivery.save()
 
             # Saving each image message
@@ -90,6 +89,7 @@ def send(request):
                         whatsapp_image_delivery = Image_Delivery()
                         whatsapp_image_delivery.to_number = contact
                         whatsapp_image_delivery.message_image = image_message
+                        whatsapp_image_delivery.message_format = new_message_format
                         whatsapp_image_delivery.save()
 
             # Saving each vcard message
@@ -104,6 +104,7 @@ def send(request):
                         whatsapp_vcard_delivery = vCard_Delivery()
                         whatsapp_vcard_delivery.to_number = contact
                         whatsapp_vcard_delivery.message = vcard_message
+                        whatsapp_vcard_delivery.message_format = new_message_format
                         whatsapp_vcard_delivery.save()
 
             request.user.update_credits()
@@ -139,7 +140,7 @@ def report(request):
 def contactus(request):
     errors = None
     if (request.method == "POST"):
-        contact_form = ContactusForm(request.POST)
+        contact_form = Contactus_Form(request.POST)
         if contact_form.is_valid():
             new_contact = contact_form.save(commit=False)
             new_contact.from_user = request.user
@@ -147,7 +148,7 @@ def contactus(request):
             return HttpResponseRedirect("/")
         else:
             errors = str(contact_form.errors)
-    contact_form = ContactusForm()
+    contact_form = Contactus_Form()
     template = "clientapp/contactus.html"
     context = {'contact_form': contact_form, 'errors': errors}
     return render(request, template, context)
@@ -168,7 +169,7 @@ def adminReport(request):
 yowsup_handler = YowsupWebStack()
 
 # Starting the Whatsapp Stack Loop in a new thread.
-# threading.Thread(target=yowsup_handler.start).start()
+threading.Thread(target=yowsup_handler.start).start()
 
 # Access to yowsupweb layer
 weblayer = yowsup_handler.get_web_layer()
@@ -202,12 +203,14 @@ def api_mainpage(request, id=None):
         context = {'msg_formats': msg_formats}
         return render(request, template, context)
     else:
-        obj1 = Delivery_Status.objects.filter(text_delivery__message_text__format__id=id, delivery_status=0)
-        obj2 = Delivery_Status.objects.filter(image_delivery__message_image__format__id=id, delivery_status=0)
-        obj3 = Delivery_Status.objects.filter(vcard_delivery__message__format__id=id, delivery_status=0)
+        obj = Delivery_Status.objects.filter(message_format__id=id, delivery_status=0)
+        if len(obj)>0:
+            message_format = obj[0].message_format
+        else:
+            message_format = None
 
-        contacts = [msg.to_number for msg in obj1] + [msg.to_number for msg in obj2] + [msg.to_number for msg in obj3]
+        contacts = [status.to_number.number for status in obj]
         weblayer.contacts_sync(contacts)
         template = "clientapp/whatsapp_message.html"
-        context = {'text_messages': obj1 , 'image_messages': obj2, 'vcard_messages': obj3}
+        context = {'message_format':message_format,  'messages' : obj}
         return render(request, template, context)

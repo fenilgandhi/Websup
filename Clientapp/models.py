@@ -74,17 +74,11 @@ class MyUser(AbstractBaseUser):
             self.total_credits = 0
 
         # Update Queued Credits
-        queued_messages = Text_Delivery.objects.filter(message_text__format__user__id=self.id, delivery_status=0).count()
-        + Image_Delivery.objects.filter(message_image__format__user__id=self.id, delivery_status=0).count()
-        + vCard_Delivery.objects.filter(message__format__user__id=self.id, delivery_status=0).count()
-
+        queued_messages = Delivery_Status.objects.filter(message_format__user=self, delivery_status=0).count()
         self.queued_credits = queued_messages
 
         # Update Sent Credits
-        sent_messages = Text_Delivery.objects.filter(message_text__format__user__id=self.id, delivery_status=1).count()
-        + Image_Delivery.objects.filter(message_image__format__user__id=self.id, delivery_status=1).count()
-        + vCard_Delivery.objects.filter(message__format__user__id=self.id, delivery_status=1).count()
-
+        sent_messages = Delivery_Status.objects.filter(message_format__user=self, delivery_status=1).count()
         self.used_credits = sent_messages
 
         # Update Remaining Credits
@@ -223,6 +217,7 @@ class Whatsapp_Text(models.Model):
 
 class Delivery_Status(models.Model):
     to_number = models.ForeignKey(Whatsapp_Number, related_name='to_whatsapp_number')
+    message_format = models.ForeignKey(Whatsapp_Message_Format)
     added_on = models.DateTimeField(auto_now_add=True, auto_now=False)
     whatsapp_message_id = models.CharField(verbose_name="Whatsapp generated id", max_length=50, blank=True, null=True)
     delivery_status = models.IntegerField(default=0)

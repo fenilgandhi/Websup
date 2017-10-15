@@ -43,7 +43,7 @@
           </div>
           <div class="text-right">
               <h3 class="text-dark"><b class="counter">{{ user.remaining_credits }}</b></h3>
-              <p class="text-muted">Left Messages</p>
+              <p class="text-muted">Credit Available</p>
           </div>
           <div class="clearfix"></div>
       </div>
@@ -92,7 +92,7 @@
               </tr>
               <tr>
                 <td>Credits</td>  
-                <td> {{ user_plan_details.total_credits }}</td>              
+                <td> {{ user_plan_details.plan.credits }}</td>              
               </tr>
               <tr>
                 <td>Activation Date</td>

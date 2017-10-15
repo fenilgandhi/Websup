@@ -35,7 +35,6 @@ Websup.prototype.check_connected = function() {
 }
 
 Websup.prototype.send_messages = function(){
-  
   var element = $('tbody tr')[0];
   if (element == undefined) { return; }
   var id = element.children[1].textContent;
@@ -51,7 +50,7 @@ Websup.prototype.send_messages = function(){
      },
      success: function(response){
         if (response == "True"){
-          element.children[0].textContent = "Sent";
+          element.children[0].textContent = "Processing";
           x.fadeOut(2000 , function() { x.remove() });
           websup.send_messages();
         }
@@ -63,6 +62,12 @@ Websup.prototype.send_messages = function(){
 
   });
 }
+
+
+Websup.prototype.reject_messages = function() {
+   
+}
+
 
 Websup.prototype.message_manager = function() {
   websup.send_messages();

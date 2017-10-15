@@ -128,14 +128,17 @@ class Whatsapp_vCard_Admin(admin.ModelAdmin):
 
 class Text_Delivery_Admin(admin.ModelAdmin):
     model = Text_Delivery
+    list_display = ("id" , "to_number")
 
 
 class Image_Delivery_Admin(admin.ModelAdmin):
     model = Image_Delivery
+    list_display = ("id" , "to_number")
 
 
 class vCard_Delivery_Admin(admin.ModelAdmin):
     model = vCard_Delivery
+    list_display = ("id" , "to_number")
 
 
 class Whatsapp_Message_Format_Admin(admin.ModelAdmin):
