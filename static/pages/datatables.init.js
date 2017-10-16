@@ -8,6 +8,7 @@ var handleDataTableButtons = function() {
         "use strict";
         0 !== $("#datatable-buttons").length && $("#datatable-buttons").DataTable({
             dom: "Bfrtip",
+            "order" : [[ '5' , 'dsc']],
             buttons: [{
                 extend: "copy",
                 className: "btn-sm"

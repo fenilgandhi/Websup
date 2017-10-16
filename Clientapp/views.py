@@ -23,13 +23,13 @@ def send(request):
     errors = None
     Text_Formset = forms.formset_factory(Whatsapp_Text_Form, extra=1)
     Image_Formset = forms.formset_factory(Whatsapp_Image_Form, extra=1)
-    vCard_Formset = forms.formset_factory(Whatsapp_vCard_Form, extra=1)
+    #vCard_Formset = forms.formset_factory(Whatsapp_vCard_Form, extra=1)
 
     if (request.method == "POST"):
         message_form = Whatsapp_New_Message_Form(request.POST, request.FILES)
         text_formset = Text_Formset(request.POST, prefix="text")
         image_formset = Image_Formset(request.POST, request.FILES, prefix="image")
-        vcard_formset = vCard_Formset(request.POST, prefix="vcard")
+     #   vcard_formset = vCard_Formset(request.POST, prefix="vcard")
         mobile_numbers = request.POST["mobile_numbers"]
         mobile_numbers = re.findall('\d{10}', mobile_numbers)
         if len(mobile_numbers) < 1:
@@ -93,19 +93,19 @@ def send(request):
                         whatsapp_image_delivery.save()
 
             # Saving each vcard message
-            for vcard_form in vcard_formset:
-                vcard_message = vcard_form.save(commit=False)
-                vcard_message.format = new_message_format
-                if len(vcard_message.name) > 0:
-                    vcard_message.save()
-                    if credits < len_contacts: continue
-                    else: credits -=  len_contacts
-                    for contact in contacts:
-                        whatsapp_vcard_delivery = vCard_Delivery()
-                        whatsapp_vcard_delivery.to_number = contact
-                        whatsapp_vcard_delivery.message = vcard_message
-                        whatsapp_vcard_delivery.message_format = new_message_format
-                        whatsapp_vcard_delivery.save()
+            # for vcard_form in vcard_formset:
+            #     vcard_message = vcard_form.save(commit=False)
+            #     vcard_message.format = new_message_format
+            #     if len(vcard_message.name) > 0:
+            #         vcard_message.save()
+            #         if credits < len_contacts: continue
+            #         else: credits -=  len_contacts
+            #         for contact in contacts:
+            #             whatsapp_vcard_delivery = vCard_Delivery()
+            #             whatsapp_vcard_delivery.to_number = contact
+            #             whatsapp_vcard_delivery.message = vcard_message
+            #             whatsapp_vcard_delivery.message_format = new_message_format
+            #             whatsapp_vcard_delivery.save()
 
             request.user.update_credits()
             return HttpResponseRedirect("/report")
@@ -117,21 +117,21 @@ def send(request):
 
     text_formset = Text_Formset(prefix="text")
     image_formset = Image_Formset(prefix="image")
-    vcard_formset = vCard_Formset(prefix="vcard")
+    #vcard_formset = vCard_Formset(prefix="vcard")
 
     template = "clientapp/send.html"
     context = {
         'message_form': message_form,
         'text_formset': text_formset,
         'image_formset': image_formset,
-        'vcard_formset': vcard_formset,
+     #   'vcard_formset': vcard_formset,
         'errors': errors
     }
     return render(request, template, context)
 
 
 def report(request):
-    individual_messages = Delivery_Status.objects.all()
+    individual_messages = Delivery_Status.objects.all().order_by('-added_on')
     template = "clientapp/report.html"
     context = {'individual_messages': individual_messages}
     return render(request, template, context)
@@ -176,14 +176,14 @@ weblayer = yowsup_handler.get_web_layer()
 
 
 def api(request, command):
-    if command == 'login':
+    if (command == 'login'):
         if not weblayer.assertConnected():
             weblayer.login('918200594756', 'Db1rSq/g8EzVgs+LbWp2idQcUUc=')
 
-    if command == 'connection_status':
+    elif (command == 'connection_status'):
         return HttpResponse(weblayer.assertConnected())
 
-    if (command == 'send'):
+    elif (command == 'send'):
         id = request.GET.get('id', '')
         if len(id) < 1:
             return HttpResponse(False)
@@ -192,6 +192,15 @@ def api(request, command):
             msg_object = msg_object[0]
             weblayer.send_message(msg_object)
             return HttpResponse(True)
+
+    elif (command == 'status'):
+        id = request.GET.get('id', '')
+        if len(id) < 1:
+            return HttpResponse(False)
+        msg_object = Delivery_Status.objects.filter(id=id)
+        if (len(msg_object) > 0) and (msg_object[0].delivery_status == 1):
+            return HttpResponse(True)
+    
     # Default Case if nothing else works
     return HttpResponse(False)
 

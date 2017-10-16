@@ -104,35 +104,30 @@
 
   <div class="row">
   <div class="card-box">
-  <div class="text-formset">
-    {{ text_formset.management_form }}
-    <div class="form-group">
+  {{ text_formset.management_form }}
     {% for form in text_formset.forms %}
+    <section class="text-formset row form-group">
       <div class="col-md-2 control-label">{{form.text.label}}</div>
-      <div class="col-md-6">{{form.text}}</div>    
+      <div class="col-md-9">{{form.text}}</div>    
+    </section>
     {% endfor %}
-    </div> 
-  </div>
   </div>
   </div>
     
   <div class="row">
   <div class="card-box">
-  <div class="image-formset">
-    
-    {{ image_formset.management_form }}
-    <div class="form-group">
-    {% for form in image_formset.forms %}
+  {{ image_formset.management_form }}
+  {% for form in image_formset.forms %}
+  <section class="row image-formset form-group">
       <div class="col-md-2 control-label">{{form.image.label_tag}}</div>
-      <div class="col-md-6">{{form.image}}</div>
-    {% endfor %}
-   </div> 
-  </div>
+      <div class="col-md-9">{{form.image}}</div>
+  </section> 
+  {% endfor %}
   </div>
   </div>
 
   
-  <div class="row">
+  <!-- <div class="row">
   <div class=" card-box">
   <div class="vcard-formset">
   {{ vcard_formset.management_form }}
@@ -147,7 +142,7 @@
   </div>
   </div>
     {% endfor %} 
-  
+   -->
 
 
 
@@ -198,9 +193,19 @@
         function deletebutton() {}
 
         $(document).ready(function() {
-          $('.text-formset').formset( {addText: 'Add Item', deleteText: 'X', prefix: '{{text_formset.prefix}}' } );
-          $('.image-formset').formset( {addText: 'Add Item', deleteText: 'X',prefix: '{{image_formset.prefix}}' });
-          $('.vcard-formset').formset( {addText: 'Add Item', deleteText: 'X',prefix: '{{vcard_formset.prefix}}' } );
+          $('.text-formset').formset( {
+            addText: 'Add Another Text',
+            deleteText: 'X',
+            addCssClass : 'btn btn-primary center-block',
+            prefix: '{{text_formset.prefix}}'
+          });
+          $('.image-formset').formset({
+            addText: 'Add Another Image',
+            deleteText: 'X',
+            addCssClass : 'btn btn-primary center-block',
+            prefix: '{{image_formset.prefix}}'
+          });
+          /*$('.vcard-formset').formset( {addText: 'Add Item', deleteText: 'X',prefix: '{{vcard_formset.prefix}}' } );*/
         });
       </script>
 {% endblock javascript %}

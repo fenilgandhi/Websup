@@ -46,10 +46,6 @@
 </html>
 {% endblock %}
 {% block javascript %}
-    <script>
-        var resizefunc = [];
-    </script>
-
     <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'plugins/datatables/dataTables.bootstrap.js' %}"></script>
 
@@ -67,38 +63,6 @@
     <script src="{% static 'pages/datatables.init.js' %}"></script>
 
     <script type="text/javascript">
-    $(document).ready(function () {
-        $.fn.dataTable.moment( 'HH:mm MMM D, YY' );
-        
-        $('#datatable').dataTable();
-        $('#datatable-keytable').DataTable({keys: true});
-        $('#datatable-responsive').DataTable();
-        $('#datatable-colvid').DataTable({
-            "dom": 'C<"clear">lfrtip',
-            "colVis": {
-                "buttonText": "Change columns"
-            }
-        });
-        $('#datatable-scroller').DataTable({
-            ajax: "assets/plugins/datatables/json/scroller-demo.json",
-            deferRender: true,
-            scrollY: 380,
-            scrollCollapse: true,
-            scroller: true
-        });
-        var table = $('#datatable-fixed-header').DataTable({fixedHeader: true});
-        var table = $('#datatable-fixed-col').DataTable({
-            scrollY: "300px",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: false,
-            fixedColumns: {
-                leftColumns: 1,
-                rightColumns: 1
-            }
-        });
-    });
     TableManageButtons.init();
-
     </script>
 {% endblock javascript %}
