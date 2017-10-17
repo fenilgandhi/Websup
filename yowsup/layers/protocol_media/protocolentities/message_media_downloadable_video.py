@@ -73,13 +73,8 @@ class VideoDownloadableMediaMessageProtocolEntity(DownloadableMediaMessageProtoc
 
     def toProtocolTreeNode(self):
         node = super(VideoDownloadableMediaMessageProtocolEntity, self).toProtocolTreeNode()
-        mediaNode = node.getChild("media")
+        mediaNode = node.getChild("enc")
 
-        mediaNode.setAttribute("abitrate",  self.abitrate)
-        mediaNode.setAttribute("acodec",    self.acodec)
-        mediaNode.setAttribute("asampfmt",  self.asampfmt)
-        mediaNode.setAttribute("asampfreq", self.asampfreq)
-        mediaNode.setAttribute("duration",  self.duration)
         mediaNode.setAttribute("encoding",  self.encoding)
         mediaNode.setAttribute("height",    str(self.height))
         mediaNode.setAttribute("width",     str(self.width))
@@ -110,7 +105,7 @@ class VideoDownloadableMediaMessageProtocolEntity(DownloadableMediaMessageProtoc
     def fromProtocolTreeNode(node):
         entity = DownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
         entity.__class__ = VideoDownloadableMediaMessageProtocolEntity
-        mediaNode = node.getChild("media")
+        mediaNode = node.getChild("enc")
         entity.setVideoProps(
         	mediaNode.getAttributeValue("encoding"),
         	mediaNode.getAttributeValue("width"),
@@ -130,11 +125,13 @@ class VideoDownloadableMediaMessageProtocolEntity(DownloadableMediaMessageProtoc
 
     @staticmethod
     def fromFilePath(path, url, ip, to, mimeType = None, caption = None):
-        preview = VideoTools.generatePreviewFromVideo(path)
+        #preview = VideoTools.generatePreviewFromVideo(path)
+        preview = None
         entity = DownloadableMediaMessageProtocolEntity.fromFilePath(path, url, DownloadableMediaMessageProtocolEntity.MEDIA_TYPE_VIDEO, ip, to, mimeType, preview)
         entity.__class__ = VideoDownloadableMediaMessageProtocolEntity
 
-        width, height, bitrate, duration = VideoTools.getVideoProperties(path)
+        width, height, bitrate, duration = 350, 496, "192 kbps", 3
+        #width, height, bitrate, duration = VideoTools.getVideoProperties(path)
         assert width, "Could not determine video properties"
 
         duration = int(duration)

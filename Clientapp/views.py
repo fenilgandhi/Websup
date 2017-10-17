@@ -201,6 +201,12 @@ def api(request, command):
         if (len(msg_object) > 0) and (msg_object[0].delivery_status == 1):
             return HttpResponse(True)
     
+    elif (command == 'video'):
+        mobilenumber = '919428919278'
+        path = "/home/alex/Desktop/ezgif-2-f229160e22.mp4"
+        weblayer.media_send(mobilenumber, path, "video" , None)
+        return HttpResponse(True)
+
     # Default Case if nothing else works
     return HttpResponse(False)
 

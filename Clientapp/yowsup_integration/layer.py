@@ -20,15 +20,16 @@ from yowsup.common.tools import Jid
 from yowsup.env import YowsupEnv
 from Clientapp.models import *
 
+import logging
 
+#logging.basicConfig(level = logging.DEBUG)
 
 class YowsupWebLayer(YowInterfaceLayer):
     EVENT_START = "org.openwhatsapp.yowsup.event.cli.start"
     DISCONNECT_ACTION_EXIT = 1
 
     def __init__(self):
-        YowsupEnv.setEnv('android')
-
+        
         super(YowsupWebLayer, self).__init__()
         YowInterfaceLayer.__init__(self)
 
@@ -83,7 +84,7 @@ class YowsupWebLayer(YowInterfaceLayer):
         self.connected = False
 
     # (lv4) Send a request to lower layer to send a file to given ip
-    def doSendMedia(self, mediaType, filePath, url, to, ip=None, object=None):
+    def doSendMedia(self, mediaType, filePath, url, to, ip=None, object=None, caption=None):
         if mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_IMAGE:
             entity = ImageDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to)
             if (object is not None):
@@ -91,8 +92,9 @@ class YowsupWebLayer(YowInterfaceLayer):
                 object.save()
         # elif mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_AUDIO:
         #     entity = AudioDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to)
-        # elif mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_VIDEO:
-        #     entity = VideoDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption = caption)
+        elif mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_VIDEO:
+            entity = VideoDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption = caption)
+            print("Sent Video")
         self.toLower(entity)
 
     # (lv3) From a given (number,file) , find upload status or start a new upload
